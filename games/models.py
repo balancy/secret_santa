@@ -21,8 +21,8 @@ class Game(models.Model):
     )
 
     max_price = models.PositiveIntegerField('максимальная стоимость подарка')
-    draw_date = models.DateTimeField('Дата жеребьёвки')
-    gift_date = models.DateTimeField('Дата отправки подарка')
+    draw_date = models.DateField('Дата жеребьёвки')
+    gift_date = models.DateField('Дата отправки подарка')
 
     class Meta:
         verbose_name = 'игра'
@@ -40,12 +40,13 @@ class Santa(models.Model):
 
     game = models.ManyToManyField(
         Game,
+        blank=True,
         related_name='santas',
         verbose_name='игра',
     )
 
-    wishlist = models.TextField('Желания', null=True)
-    letter_to_santa = models.TextField('Письмо Санте', null=True)
+    wishlist = models.TextField('Желания', null=True, blank=True)
+    letter_to_santa = models.TextField('Письмо Санте', null=True, blank=True)
 
     class Meta:
         verbose_name = 'санта'
