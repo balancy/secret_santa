@@ -1,12 +1,18 @@
-<div class="container">
-    <h1>Welcome</h1>
-    <p>
-        You can log in here!
-    </p>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-</div>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Логин{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Добро пожаловать</h1>
+        <p>
+            Вы можете войти в свой аккаунт!
+        </p>
+        <h2>Вход</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+{% endblock %}
