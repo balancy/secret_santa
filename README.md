@@ -17,10 +17,6 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. Rename `.env.example` to `.env` and change `SECRET_KEY` environment variable
-
-- `SECRET_KEY`  - django secret key
-
 4. Migrate the database
 ```
 python manage.py migrate
