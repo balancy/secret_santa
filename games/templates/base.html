@@ -26,7 +26,7 @@
         {% if user.is_authenticated %}
         <div class="log">{{ user }} <a class="log" href="#">Выход</a></div>
         {% else %}
-          <a class="log" href="#">Вход и регистрация</a>
+          <a class="log" href="{% url 'login' %}">Вход и регистрация</a>
         {% endif %}
       </div>
     </nav>
