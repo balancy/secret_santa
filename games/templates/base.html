@@ -16,7 +16,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="#">Тайный санта</a>
+      <a class="navbar-brand" href="{% url 'index' %}">Тайный санта</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -24,17 +24,16 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         {% if user.is_authenticated %}
-        <div class="log">{{ user }} <a class="log" href="#">Выход</a></div>
+          <div class="log mx-2">{{ user }} <a class="log mx-2" href="{% url 'logout' %}">Выход</a></div>
         {% else %}
-          <a class="log" href="{% url 'login' %}">Вход и регистрация</a>
+          <a class="log mx-2" href="{% url 'login' %}">Вход</a>
+          <a class="log mx-2" href="{% url 'register' %}">Регистрация</a>
         {% endif %}
       </div>
     </nav>
-    <main role="main" class="container">
-      <div class="starter-template">
-        {% block content %}
-        {% endblock %}
-      </div>
+    <main role="main" class="container my-3">
+      {% block content %}
+      {% endblock %}
     </main><!-- /.container -->
     <!-- Bootstrap core JavaScript
     ================================================== -->
