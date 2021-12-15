@@ -11,4 +11,5 @@ urlpatterns = [
         name='login',
     ),
     path('profile', views.view_profile, name='profile'),
+    path('santacard/', views.create_santa_card, name='santacard')
 ]

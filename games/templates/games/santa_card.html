@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Карточка санты{% endblock %}
+
+{% block content %}
+  <h1>Карточка санты</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a class="btn btn-lg btn-primary" href="{% url 'santacard' %}" role="button">Создать</a>
+    </form>
+{% endblock %}
