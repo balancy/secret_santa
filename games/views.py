@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from django.http.response import HttpResponse
+from django.contrib.auth.views import LoginView
+from django.urls import reverse
 
-# Create your views here.
+
+def view_profile(request):
+    return HttpResponse(f'Salut, {request.user}')
+
+
+class LoginUserView(LoginView):
+    template_name = 'games/login.html'
+
+    def get_success_url(self):
+        return reverse('profile')

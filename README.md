@@ -17,7 +17,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-4. Migrate the database
+3. Migrate the database
 ```
 python manage.py migrate
 ```
