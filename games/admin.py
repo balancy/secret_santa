@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from games.models import Draw, Exclusion, Game, Santa
+from games.models import CustomUser, Draw, Exclusion, Game, Santa
+
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Draw)
