@@ -81,3 +81,30 @@ class Draw(models.Model):
     class Meta:
         verbose_name = 'жеребьёвка'
         verbose_name_plural = 'жеребьёвки'
+
+
+class Exclusion(models.Model):
+    game = models.ForeignKey(
+        Game,
+        related_name='exclusions',
+        verbose_name='игра',
+        on_delete=models.PROTECT,
+    )
+
+    giver = models.ForeignKey(
+        Santa,
+        related_name='givers_to_exclude',
+        verbose_name='даритель',
+        on_delete=models.PROTECT,
+    )
+
+    receiver = models.ForeignKey(
+        Santa,
+        related_name='receivers_to_eclude',
+        verbose_name='одаряемый',
+        on_delete=models.PROTECT,
+    )
+
+    class Meta:
+        verbose_name = 'пара-исключение'
+        verbose_name_plural = 'пары-исключения'

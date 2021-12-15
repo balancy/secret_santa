@@ -2,7 +2,7 @@
 
 ## Install
 
-At least Python3.8, Git and Poetry should be already installed.
+At least Python3.8 and Git should be already installed.
 
 1. Clone the repository
 ```
@@ -16,10 +16,6 @@ python -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 ```
-
-3. Rename `.env.example` to `.env` and change `SECRET_KEY` environment variable
-
-- `SECRET_KEY`  - django secret key
 
 4. Migrate the database
 ```
