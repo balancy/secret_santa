@@ -1,18 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'games/base.html' %}
 {% load static %}
 {% block title %}Логин{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Добро пожаловать</h1>
-        <p>
-            Вы можете войти в свой аккаунт!
-        </p>
-        <h2>Вход</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Войти</button>
-        </form>
+<div class="card">
+    <div class="card-header">
+      Логин
     </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form  %}
+          <div class="row">
+              <div class="col my-2 col-4">
+                {{ field.label_tag }}
+              </div>
+              <div class="col col-8">
+                {{ field }}
+              </div>
+            <span class="red">{{ field.errors }}</span>
+          </div>
+        {% endfor %}
+        <button class="btn btn-outline-dark my-3 float-right" type="submit">
+          Войти
+        </button>
+      </form>
+    </div>
+  </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from games.models import CustomUser, Santa
 
@@ -8,7 +8,7 @@ class FormPrettifyFieldsMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for name, obj in self.fields.items():
-            obj.widget.attrs['class'] = f'form-control mt-3'
+            obj.widget.attrs['class'] = f'form-control'
             obj.widget.attrs['id'] = name
 
 
@@ -18,7 +18,7 @@ class SantaCardForm(forms.ModelForm):
         fields = '__all__'
 
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -34,3 +34,7 @@ class RegistrationForm(UserCreationForm):
             user.save()
 
         return user
+
+
+class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
+    pass
