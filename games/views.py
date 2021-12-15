@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -20,3 +20,7 @@ class LoginUserView(LoginView):
 
     def get_success_url(self):
         return reverse('profile')
+
+
+class LogoutUserView(LogoutView):
+    next_page = 'index'
