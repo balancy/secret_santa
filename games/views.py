@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -30,3 +30,7 @@ def create_santa_card(request):
     else:
         form = SantaCardForm()
         return render(request, 'games/santa_card.html', context={'form': form})
+
+
+class LogoutUserView(LogoutView):
+    next_page = 'index'
