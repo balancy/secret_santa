@@ -1,28 +1,26 @@
-import random
-
-from more_itertools import chunked
+from itertools import combinations
 
 from django.core.management.base import BaseCommand, CommandError
 from games.models import Game, Santa, Draw, Exclusion
 
 
+def get_pair_exclusion(game):
+    return Exclusion.objects.filter(game=game)
+
+
 def make_draw(game):
     santas = Santa.objects.filter(game=game)
 
-    random.shuffle(santas)
-    pairs = list(chunked(santas, 2))
-    if len(santas) % 2 != 0:
-        pairs[-1].append(santas[0])
-
+    pairs = list(combinations(santas, 2))
     for giver, receiver in pairs:
-        draw = Draw.objects.create(
-            game=game,
-            giver=giver,
-            receiver=receiver
-        )
+         draw = Draw.objects.get_or_create(
+             game=game,
+             giver=giver,
+             receiver=receiver
+         )
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        game = Game.objects.all().first()
+        game = Game.objects.first()
         make_draw(game)
