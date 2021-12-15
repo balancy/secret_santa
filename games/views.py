@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 
 from .forms import RegistrationForm, SantaCardForm
 from .helpers import create_santa_for_user
+from .models import Santa
 
 
 def index(request):
@@ -55,9 +56,17 @@ def register_user(request):
     return render(request, 'games/register_user.html', {'form': form})
 
 
-def create_santa_card(request):
+@login_required(login_url='login')
+def update_santa_card(request):
+    user = request.user
+    santa_card = Santa.objects.get(user=user)
     if request.method == 'POST':
-        pass
+        print('post')
+        form = SantaCardForm(request.POST, instance=santa_card)
+        if form.is_valid():
+            print(form.cleaned_data)
+            form.save()
+        return redirect(reverse_lazy('profile'))
     else:
-        form = SantaCardForm()
+        form = SantaCardForm(instance=santa_card)
         return render(request, 'games/santa_card.html', context={'form': form})
