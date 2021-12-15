@@ -54,7 +54,7 @@ class Santa(models.Model):
         verbose_name_plural = 'санты'
 
     def __str__(self):
-        return f'Санта {self.user.last_name}'
+        return f'Санта {self.user.username}'
 
 
 class Draw(models.Model):

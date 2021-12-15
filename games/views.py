@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from .forms import RegistrationForm, SantaCardForm
+from .helpers import create_santa_for_user
 
 
 def index(request):
@@ -38,6 +39,8 @@ def register_user(request):
 
         if form.is_valid():
             new_user = form.save()
+            create_santa_for_user(new_user)
+
             new_user = authenticate(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
