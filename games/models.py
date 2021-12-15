@@ -39,7 +39,7 @@ class Santa(models.Model):
         on_delete=models.PROTECT,
     )
 
-    game = models.ManyToManyField(
+    games = models.ManyToManyField(
         Game,
         blank=True,
         related_name='santas',
@@ -83,6 +83,9 @@ class Draw(models.Model):
         verbose_name = 'жеребьёвка'
         verbose_name_plural = 'жеребьёвки'
 
+    def __str__(self):
+        return f'Жеребьёвка {self.game.name} <{self.giver} - {self.receiver}>'
+
 
 class Exclusion(models.Model):
     game = models.ForeignKey(
@@ -109,3 +112,9 @@ class Exclusion(models.Model):
     class Meta:
         verbose_name = 'пара-исключение'
         verbose_name_plural = 'пары-исключения'
+
+    def __str__(self):
+        return (
+            f'Пара-исключение <{self.giver} - {self.receiver}> в игре '
+            f'<{self.game.name}>'
+        )
