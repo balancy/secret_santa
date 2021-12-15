@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
-from .forms import RegistrationForm, SantaCardForm
+from .forms import LoginUserForm, RegistrationForm, SantaCardForm
 from .helpers import create_santa_for_user
 from .models import Santa
 
@@ -22,6 +22,7 @@ def view_profile(request):
 class LoginUserView(LoginView):
     template_name = 'games/login.html'
     redirect_authenticated_user = True
+    form_class = LoginUserForm
 
     def get_success_url(self):
         return reverse_lazy('profile')
