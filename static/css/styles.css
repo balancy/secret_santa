@@ -8,3 +8,12 @@ body {
 .log {
     color: white;
 }
+
+.red {
+  color: red;
+}
+
+.container {
+  width: 1000px;
+  font-family: "Verdana", "Arial", "Helvetica Neue", sans-serif;
+}
