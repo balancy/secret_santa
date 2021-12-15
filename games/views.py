@@ -62,10 +62,8 @@ def update_santa_card(request):
     user = request.user
     santa_card = Santa.objects.get(user=user)
     if request.method == 'POST':
-        print('post')
         form = SantaCardForm(request.POST, instance=santa_card)
         if form.is_valid():
-            print(form.cleaned_data)
             form.save()
         return redirect(reverse_lazy('profile'))
     else:
