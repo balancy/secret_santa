@@ -2,7 +2,7 @@
 
 ## Install
 
-At least Python3.8, Git and Poetry should be already installed.
+At least Python3.8 and Git should be already installed.
 
 1. Clone the repository
 ```
