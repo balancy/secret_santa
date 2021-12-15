@@ -12,8 +12,9 @@ git clone git@github.com:balancy/secret_santa.git
 2. Go inside cloned repo, install depenencies and activate virtual environment
 ```
 cd secret_santa
-poetry install
-poetry shell
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
 ```
 
 3. Rename `.env.example` to `.env` and change `SECRET_KEY` environment variable
