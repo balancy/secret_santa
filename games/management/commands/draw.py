@@ -13,9 +13,9 @@ def make_draw(game):
     santas = Santa.objects.filter(game=game)
 
     pairs = list(combinations(santas, 2))
-    filtered_pairs = list(set(pairs) - set(get_pair_exclusion(game)))
+    # filtered_pairs = list(set(pairs) - set(get_pair_exclusion(game)))
 
-    for giver, receiver in filtered_pairs:
+    for giver, receiver in pairs:
         draw = Draw.objects.get_or_create(
             game=game,
             giver=giver,
