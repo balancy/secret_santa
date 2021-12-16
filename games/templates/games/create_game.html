@@ -1,0 +1,32 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% block title %}Создание игры{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      Создание игры
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="row">
+            {% if field.name != 'coordinator' %}
+              <div class="col my-2 col-4">
+                {{ field.label_tag }}
+              </div>
+            {% endif %}
+            <div class="col my-2 col-8">
+              {{ field }}
+            </div>
+            <span class="red">{{ field.errors }}</span>
+          </div>
+        {% endfor %}
+        <button class="btn btn-outline-dark my-3 float-right" type="submit">
+          Создать игру
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

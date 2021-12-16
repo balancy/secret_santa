@@ -2,7 +2,7 @@ from typing_extensions import Required
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-from games.models import CustomUser, Santa
+from games.models import CustomUser, Game, Santa
 
 
 class FormPrettifyFieldsMixin(forms.Form):
@@ -49,3 +49,12 @@ class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
 
 class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
     pass
+
+
+class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    class Meta:
+        model = Game
+        fields = ('name', 'coordinator', 'max_price', 'draw_date', 'gift_date')
+        widgets = {
+            'coordinator': forms.HiddenInput(),
+        }

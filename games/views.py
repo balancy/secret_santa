@@ -4,7 +4,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
-from .forms import LoginUserForm, RegistrationForm, SantaCardForm
+from .forms import (
+    CreateGameForm,
+    LoginUserForm,
+    RegistrationForm,
+    SantaCardForm,
+)
 from .helpers import create_santa_for_user
 from .models import Santa
 
@@ -73,3 +78,22 @@ def update_santa_card(request):
     else:
         form = SantaCardForm(instance=santa_card)
         return render(request, 'games/santa_card.html', context={'form': form})
+
+
+@login_required(login_url='login')
+def create_game(request):
+    user = request.user
+    if request.method == 'POST':
+        form = CreateGameForm(request.POST)
+
+        if form.is_valid():
+            print('valid')
+            form.save()
+            return redirect(reverse_lazy('profile'))
+
+        print('not valid')
+        return render(request, 'games/create_game.html', {'form': form})
+
+    form = CreateGameForm(initial={'coordinator': user})
+
+    return render(request, 'games/create_game.html', {'form': form})

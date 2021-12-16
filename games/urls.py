@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout', views.LogoutUserView.as_view(), name='logout'),
     path('register', views.register_user, name='register'),
     path('profile', views.view_profile, name='profile'),
-    path('santacard/', views.update_santa_card, name='santacard'),
+    path('santacard', views.update_santa_card, name='santacard'),
+    path('create_game', views.create_game, name='create_game'),
 ]
