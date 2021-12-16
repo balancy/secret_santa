@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
@@ -20,6 +21,16 @@ class SantaCardForm(forms.ModelForm):
 
 class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
     email = forms.EmailField(required=True)
+    wishlist = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Список желаемого',
+    )
+    letter_to_santa = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Письмо Санте',
+    )
 
     class Meta:
         model = CustomUser
