@@ -3,10 +3,18 @@
 {% block title %}Карточка санты{% endblock %}
 
 {% block content %}
-  <h1>Карточка санты</h1>
-    <form method="post">
+  <div class="card">
+    <div class="card-header">
+      Карточка санты
+    </div>
+    <div class="card-body">
+      <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-lg btn-primary" type="submit" role="button">Сохранить</button>
-    </form>
+        <button class="btn btn-outline-dark my-3 float-right" type="submit">
+          Сохранить
+        </button>
+      </form>
+    </div>
+  </div>
 {% endblock %}
