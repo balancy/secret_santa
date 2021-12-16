@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
@@ -6,7 +8,7 @@ from django.urls import reverse_lazy
 
 from .forms import LoginUserForm, RegistrationForm, SantaCardForm
 from .helpers import create_santa_for_user
-from .models import Santa
+from .models import Santa, Game, CustomUser
 
 
 def index(request):
@@ -16,7 +18,12 @@ def index(request):
 @login_required(login_url='login')
 def view_profile(request):
     user = request.user
-    return render(request, 'games/profile.html')
+    santa = Santa.objects.get(user=user)
+    customuser = CustomUser.objects.get(username=user)
+    santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
+    coordinator_games = Game.objects.filter(coordinator=customuser)
+    context = {'santa_games': santa_games, 'coordinator_games': coordinator_games}
+    return render(request, 'games/profile.html', context=context)
 
 
 class LoginUserView(LoginView):

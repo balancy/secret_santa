@@ -3,6 +3,40 @@
 {% block title %}Личный кабинет{% endblock %}
 
 {% block content %}
-  <h1>Личный кабинет</h1>
-  <a class="btn btn-lg btn-primary" href="{% url 'santacard' %}" role="button">Карточка санты</a>
+  <div class="card">
+    <div class="card-header">Личный кабинет</div>
+    <div class="card-body">
+      <div class="card">
+        <div class="card-header">Список игр санты</div>
+        <div class="card-body">
+        {% if santa_games %}
+        <ul>
+          {% for santa_game in santa_games %}
+            <li>{{ santa_game.name }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+          <div>У санты пока нет ни одной игры</div>
+        {% endif %}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Список игр организатора</div>
+        <div class="card-body">
+        {% if coordinator_games %}
+        <ul>
+          {% for coordinator_game in coordinator_games %}
+              <li>{{ coordinator_game.name }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+          <div>Вы не организовали ни одной игры</div>
+        {% endif %}
+        </div>
+      </div>
+      <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Карточка санты</a>
+    </div>
+  </div>
 {% endblock %}
+
+
