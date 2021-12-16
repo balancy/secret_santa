@@ -12,7 +12,7 @@ class FormPrettifyFieldsMixin(forms.Form):
             obj.widget.attrs['id'] = name
 
 
-class SantaCardForm(forms.ModelForm):
+class SantaCardForm(forms.ModelForm, FormPrettifyFieldsMixin):
     class Meta:
         model = Santa
         fields = ['wishlist', 'letter_to_santa']
