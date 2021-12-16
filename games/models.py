@@ -40,6 +40,7 @@ class Game(models.Model):
 class Santa(models.Model):
     user = models.OneToOneField(
         CustomUser,
+        related_name='santa',
         on_delete=models.PROTECT,
     )
 

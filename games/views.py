@@ -98,7 +98,12 @@ def create_game(request):
         form = CreateGameForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            new_game = form.save()
+
+            if form.cleaned_data['is_santa']:
+                santa = form.cleaned_data['coordinator'].santa
+                santa.games.add(new_game)
+
             return redirect(reverse_lazy('profile'))
 
         return render(request, 'games/create_game.html', {'form': form})

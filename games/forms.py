@@ -54,6 +54,11 @@ class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
 
 
 class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    is_santa = forms.BooleanField(
+        required=False,
+        label='Тоже являюсь участником игры',
+    )
+
     class Meta:
         model = Game
         fields = ('name', 'coordinator', 'max_price', 'draw_date', 'gift_date')

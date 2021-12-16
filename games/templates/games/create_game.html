@@ -35,7 +35,7 @@
 
               <div class="col-2 my-2">
                 <label class="switch">
-                  <input type="checkbox"  onclick="togglePriceElement()">
+                  <input type="checkbox" onclick="togglePriceElement()">
                   <span class="slider round"></span>
                 </label>
               </div>
@@ -43,6 +43,19 @@
 
             {% elif field.name == 'coordinator'%}
               {{ field }}
+
+            {% elif field.name == 'is_santa' %}
+              <div class="col-6 my-2">
+                Тоже являюсь участником игры
+              </div>
+
+              <div class="col-2 my-2">
+                <label class="switch">
+                  {{ field }}
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="col-4 my-2"></div>
 
             {% elif field.name == 'max_price' %}
               <div class="col col-12" id="can_hide" style="display: none;">
