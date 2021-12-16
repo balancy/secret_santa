@@ -53,18 +53,54 @@ class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
     pass
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
-
 class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
     class Meta:
         model = Game
         fields = ('name', 'coordinator', 'max_price', 'draw_date', 'gift_date')
         widgets = {
             'coordinator': forms.HiddenInput(),
-            'draw_date': DateInput(),
-            'gift_date': DateInput(),
+            'draw_date': forms.DateInput(
+                attrs={'type': 'date'},
+                format=('%Y-%m-%d'),
+            ),
+            'gift_date': forms.DateInput(
+                attrs={'type': 'date'},
+                format=('%Y-%m-%d'),
+            ),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        draw_date = cleaned_data.get('draw_date')
+        gift_date = cleaned_data.get('gift_date')
+
+        if draw_date and gift_date:
+            if draw_date <= date.today():
+                raise forms.ValidationError(
+                    _('Дата жеребьевки должна быть позже сегодняшнего дня')
+                )
+
+        if gift_date <= draw_date:
+            raise forms.ValidationError(
+                _('Дата отправки подарка должна быть позже даты жеребьевки')
+            )
+
+        return cleaned_data
+
+
+class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    class Meta:
+        model = Game
+        fields = ('name', 'max_price', 'draw_date', 'gift_date')
+        widgets = {
+            'draw_date': forms.DateInput(
+                attrs={'type': 'date'},
+                format=('%Y-%m-%d'),
+            ),
+            'gift_date': forms.DateInput(
+                attrs={'type': 'date'},
+                format=('%Y-%m-%d'),
+            ),
         }
 
     def clean(self):

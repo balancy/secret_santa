@@ -8,8 +8,23 @@
   <div class="card">
     <div class="card-header">Личный кабинет</div>
     <div class="card-body">
+
       <div class="card">
-        <div class="card-header">Список игр санты</div>
+        <div class="card-header">Организатор игр:</div>
+        <div class="card-body">
+          {% if coordinator_games %}
+            {% for coordinator_game in coordinator_games %}
+              <p><a href="{% url 'update_game' coordinator_game.pk %}" class="text-dark">{{ coordinator_game.name }}</a></p>
+            {% endfor %}
+          {% else %}
+            <div>Вы пока не организовали ни одной игры</div>
+          {% endif %}
+          <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Участвуете в играх:</div>
         <div class="card-body">
         {% if santa_games %}
         <ul>
@@ -18,25 +33,11 @@
           {% endfor %}
         </ul>
         {% else %}
-          <div>У санты пока нет ни одной игры</div>
+          <div>Вы пока не участвуете ни в одной игре</div>
         {% endif %}
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">Список игр организатора</div>
-        <div class="card-body">
-          {% if coordinator_games %}
-          <ul>
-            {% for coordinator_game in coordinator_games %}
-                <li>{{ coordinator_game.name }}</li>
-              {% endfor %}
-          </ul>
-          {% else %}
-            <div>Вы не организовали ни одной игры</div>
-          {% endif %}
-          <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
-        </div>
-      </div>
+
       <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Карточка санты</a>
     </div>
   </div>

@@ -1,13 +1,13 @@
 {% extends 'games/base.html' %}
 {% load static %}
 {% block header %}
-  <title>Создание игры</title>
+  <title>Изменение игры</title>
 {% endblock %}
 
 {% block content %}
   <div class="card">
     <div class="card-header">
-      Создание игры
+      Изменение игры
     </div>
     <div class="card-body">
       <form method="post">
@@ -35,17 +35,22 @@
 
               <div class="col-2 my-2">
                 <label class="switch">
-                  <input type="checkbox"  onclick="togglePriceElement()">
+                  <input
+                    type="checkbox"
+                    onclick="togglePriceElement()"
+                    {% if form.instance.max_price is not None %}checked{% endif %}
+                  >
                   <span class="slider round"></span>
                 </label>
               </div>
               <div class="col-4 my-2"></div>
 
-            {% elif field.name == 'coordinator'%}
-              {{ field }}
-
             {% elif field.name == 'max_price' %}
-              <div class="col col-12" id="can_hide" style="display: none;">
+              <div
+                class="col col-12"
+                id="can_hide"
+                style="display: {% if form.instance.max_price is None %}none{% else %}initial{% endif %};"
+              >
                 <div class="row">
                   <div class="col can_hide my-2 col-6">
                     {{ field.label_tag }}
@@ -70,7 +75,7 @@
         {% endfor %}
 
         <button class="btn btn-outline-dark my-3 float-right" type="submit">
-          Создать игру
+          Изменить данные
         </button>
       </form>
     </div>

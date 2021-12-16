@@ -11,6 +11,7 @@ from .forms import (
     LoginUserForm,
     RegistrationForm,
     SantaCardForm,
+    UpdateGameForm,
 )
 from .helpers import create_santa_for_user
 from .models import Santa, Game, CustomUser
@@ -27,7 +28,10 @@ def view_profile(request):
     customuser = CustomUser.objects.get(username=user)
     santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
     coordinator_games = Game.objects.filter(coordinator=customuser)
-    context = {'santa_games': santa_games, 'coordinator_games': coordinator_games}
+    context = {
+        'santa_games': santa_games,
+        'coordinator_games': coordinator_games,
+    }
     return render(request, 'games/profile.html', context=context)
 
 
@@ -82,9 +86,9 @@ def update_santa_card(request):
         if form.is_valid():
             form.save()
         return redirect(reverse_lazy('profile'))
-    else:
-        form = SantaCardForm(instance=santa_card)
-        return render(request, 'games/santa_card.html', context={'form': form})
+
+    form = SantaCardForm(instance=santa_card)
+    return render(request, 'games/santa_card.html', context={'form': form})
 
 
 @login_required(login_url='login')
@@ -102,3 +106,25 @@ def create_game(request):
     form = CreateGameForm(initial={'coordinator': user})
 
     return render(request, 'games/create_game.html', {'form': form})
+
+
+@login_required(login_url='login')
+def update_game(request, pk):
+    user = request.user
+    game = Game.objects.get(pk=pk)
+
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
+
+    if request.method == 'POST':
+        form = UpdateGameForm(request.POST, instance=game)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('profile'))
+
+        return render(request, 'games/update_game.html', {'form': form})
+
+    form = UpdateGameForm(instance=game)
+
+    return render(request, 'games/update_game.html', {'form': form})
