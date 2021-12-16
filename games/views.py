@@ -48,7 +48,11 @@ def register_user(request):
 
         if form.is_valid():
             new_user = form.save()
-            create_santa_for_user(new_user)
+            create_santa_for_user(
+                new_user,
+                form.cleaned_data['wishlist'],
+                form.cleaned_data['letter_to_santa'],
+            )
 
             new_user = authenticate(
                 username=form.cleaned_data['username'],

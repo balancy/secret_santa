@@ -22,6 +22,12 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
+4. Add the cron job to your crontab by executing bash command:
+```
+(crontab -l ; echo "59 23 * * * python3 /full_path_to_your_manage_py_script/manage.py draw") | crontab -
+```
+Change **full_path_to_your_manage_py_script** to the full path to your manage.py script location.
+
 ## Launch the app
 
 ```

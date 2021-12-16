@@ -1,3 +1,5 @@
+import datetime
+
 from collections import deque
 
 from django.core.management.base import BaseCommand
@@ -10,15 +12,19 @@ def get_pair_exclusion(game):
 
 
 def make_draw(game):
-    santas = Santa.objects.filter(game=game)
+    pairs_amount_to_ignore_exclusion = 4
+    santas = Santa.objects.filter(games=game)
 
     partners = deque(santas)
     partners.rotate()
     pairs = list(zip(santas, partners))
 
-    filtered_pairs = list(set(pairs) - set(get_pair_exclusion(game)))
+    modified_pairs = (
+        list(set(pairs) - set(get_pair_exclusion(game)))
+            if len(pairs) > pairs_amount_to_ignore_exclusion else list(set(pairs))
+    )
 
-    for giver, receiver in filtered_pairs:
+    for giver, receiver in modified_pairs:
         draw = Draw.objects.get_or_create(
             game=game,
             giver=giver,
@@ -28,5 +34,8 @@ def make_draw(game):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        game = Game.objects.first()
-        make_draw(game)
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+        games = Game.objects.filter(draw_date=current_date)
+        for game in games:
+            make_draw(game)
