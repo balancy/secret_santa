@@ -20,6 +20,9 @@
       </button>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
+        {% if user.is_authenticated %}
+          <a class="log mx-2" href="{% url 'profile' %}">Личный кабинет</a>
+        {% endif %}
         </ul>
         {% if user.is_authenticated %}
           <div class="log mx-2">{{ user }} <a class="log mx-2" href="{% url 'logout' %}">Выход</a></div>
