@@ -23,20 +23,19 @@
       <div class="card">
         <div class="card-header">Список игр организатора</div>
         <div class="card-body">
-        {% if coordinator_games %}
-        <ul>
-          {% for coordinator_game in coordinator_games %}
-              <li>{{ coordinator_game.name }}</li>
-            {% endfor %}
-        </ul>
-        {% else %}
-          <div>Вы не организовали ни одной игры</div>
-        {% endif %}
+          {% if coordinator_games %}
+          <ul>
+            {% for coordinator_game in coordinator_games %}
+                <li>{{ coordinator_game.name }}</li>
+              {% endfor %}
+          </ul>
+          {% else %}
+            <div>Вы не организовали ни одной игры</div>
+          {% endif %}
+          <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
         </div>
       </div>
       <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Карточка санты</a>
     </div>
   </div>
 {% endblock %}
-
-

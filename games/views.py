@@ -94,11 +94,9 @@ def create_game(request):
         form = CreateGameForm(request.POST)
 
         if form.is_valid():
-            print('valid')
             form.save()
             return redirect(reverse_lazy('profile'))
 
-        print('not valid')
         return render(request, 'games/create_game.html', {'form': form})
 
     form = CreateGameForm(initial={'coordinator': user})

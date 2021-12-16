@@ -21,7 +21,11 @@ class Game(models.Model):
         on_delete=models.PROTECT,
     )
 
-    max_price = models.PositiveIntegerField('максимальная стоимость подарка')
+    max_price = models.PositiveIntegerField(
+        'максимальная стоимость подарка',
+        null=True,
+        blank=True,
+    )
     draw_date = models.DateField('Дата жеребьёвки')
     gift_date = models.DateField('Дата отправки подарка')
 

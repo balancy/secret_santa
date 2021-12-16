@@ -1,5 +1,8 @@
+from datetime import date
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 from games.models import CustomUser, Game, Santa
 
@@ -57,3 +60,21 @@ class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
         widgets = {
             'coordinator': forms.HiddenInput(),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        draw_date = cleaned_data.get('draw_date')
+        gift_date = cleaned_data.get('gift_date')
+
+        if draw_date and gift_date:
+            if draw_date <= date.today():
+                raise forms.ValidationError(
+                    _('Дата жеребьевки должна быть позже сегодняшнего дня')
+                )
+
+        if gift_date <= draw_date:
+            raise forms.ValidationError(
+                _('Дата отправки подарка должна быть позже даты жеребьевки')
+            )
+
+        return cleaned_data
