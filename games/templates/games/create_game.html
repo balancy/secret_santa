@@ -19,14 +19,48 @@
         {% for field in form %}
           <div class="row">
 
-            {% if field.name == 'coordinator'%}
-              {{ field }}
+            {% if field.name == 'name' %}
 
-            {% else %}
-              <div class="col my-2 col-4">
+              <div class="col my-2 col-6">
                 {{ field.label_tag }}
               </div>
-              <div class="col my-2 col-8">
+              <div class="col my-2 col-6">
+                {{ field }}
+              </div>
+              <span class="red">{{ field.errors }}</span>
+
+              <div class="col-6 my-2">
+                Ограничить стоимость подарка
+              </div>
+
+              <div class="col-2 my-2">
+                <label class="switch">
+                  <input type="checkbox"  onclick="togglePriceElement()">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="col-4 my-2"></div>
+
+            {% elif field.name == 'coordinator'%}
+              {{ field }}
+
+            {% elif field.name == 'max_price' %}
+              <div class="col col-12" id="can_hide" style="display: none;">
+                <div class="row">
+                  <div class="col can_hide my-2 col-6">
+                    {{ field.label_tag }}
+                  </div>
+                  <div class="col cah_hide my-2 col-6">
+                    {{ field }}
+                  </div>
+                </div>
+              </div>
+
+            {% else %}
+              <div class="col my-2 col-6">
+                {{ field.label_tag }}
+              </div>
+              <div class="col my-2 col-6">
                 {{ field }}
               </div>
               <span class="red">{{ field.errors }}</span>
@@ -41,5 +75,16 @@
       </form>
     </div>
   </div>
+<script>
+  const togglePriceElement = () => {
+      el = document.getElementById('can_hide');
+      if (el.style.display === 'none') {
+        el.style.display = 'initial';
+      } else {
+        el.style.display = 'none';
+        document.getElementById('max_price').value = null;
+      }
+  }
+</script>
 
 {% endblock %}
