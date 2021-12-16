@@ -53,12 +53,18 @@ class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
     pass
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
     class Meta:
         model = Game
         fields = ('name', 'coordinator', 'max_price', 'draw_date', 'gift_date')
         widgets = {
             'coordinator': forms.HiddenInput(),
+            'draw_date': DateInput(),
+            'gift_date': DateInput(),
         }
 
     def clean(self):

@@ -1,6 +1,8 @@
 {% extends 'games/base.html' %}
 {% load static %}
-{% block title %}Создание игры{% endblock %}
+{% block header %}
+  <title>Создание игры</title>
+{% endblock %}
 
 {% block content %}
   <div class="card">
@@ -13,23 +15,31 @@
         {% for err in form.non_field_errors %}
           <p class="red">{{ err }}</p>
         {% endfor %}
+
         {% for field in form %}
           <div class="row">
-            {% if field.name != 'coordinator' %}
+
+            {% if field.name == 'coordinator'%}
+              {{ field }}
+
+            {% else %}
               <div class="col my-2 col-4">
                 {{ field.label_tag }}
               </div>
+              <div class="col my-2 col-8">
+                {{ field }}
+              </div>
+              <span class="red">{{ field.errors }}</span>
             {% endif %}
-            <div class="col my-2 col-8">
-              {{ field }}
-            </div>
-            <span class="red">{{ field.errors }}</span>
           </div>
+
         {% endfor %}
+
         <button class="btn btn-outline-dark my-3 float-right" type="submit">
           Создать игру
         </button>
       </form>
     </div>
   </div>
+
 {% endblock %}
