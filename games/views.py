@@ -28,9 +28,11 @@ def view_profile(request):
     customuser = CustomUser.objects.get(username=user)
     santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
     coordinator_games = Game.objects.filter(coordinator=customuser)
+    form = SantaCardForm(instance=santa)
     context = {
         'santa_games': santa_games,
         'coordinator_games': coordinator_games,
+        'form': form
     }
     return render(request, 'games/profile.html', context=context)
 
