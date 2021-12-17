@@ -18,6 +18,8 @@ from .models import Santa, Game, CustomUser
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy('profile'))
     return render(request, 'games/index.html')
 
 
@@ -135,3 +137,7 @@ def update_game(request, pk):
     form = UpdateGameForm(instance=game)
 
     return render(request, 'games/update_game.html', {'form': form})
+
+
+def greeting_page(request):
+    return render(request, 'games/greeting_page.html')
