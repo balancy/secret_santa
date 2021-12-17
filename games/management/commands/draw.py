@@ -83,7 +83,7 @@ def is_exclusions_in_pairs(pairs, exclusions):
 
 
 def make_draw(game):
-    santas = Santa.objects.filter(games=game)
+    santas = Santa.objects.filter(games=game).order_by('?')
 
     partners = deque(santas)
     partners.rotate()
