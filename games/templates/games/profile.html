@@ -5,49 +5,90 @@
 {% endblock %}
 
 {% block content %}
-  <div class="card">
+  <div class="card  border-dark">
     <div class="card-header">Личный кабинет</div>
     <div class="card-body">
 
-      <div class="card">
-        <div class="card-header">Организатор игр:</div>
-          <div class="card-body">
-            {% if coordinator_games %}
-              {% for coordinator_game in coordinator_games %}
-                <p><a href="{% url 'update_game' coordinator_game.pk %}" class="text-dark">{{ coordinator_game.name }}</a></p>
+      <h3><span class="badge bg-dark text-light">Профиль</span></h3>
+      <div class="row my-3">
+
+        <div class="col">
+          <div class="card">
+            <div class="card-header">Личная информация</div>
+            <div class="card-body">
+              {% if user.first_name %}<p>Имя: {{ user.first_name }}</p>{% endif %}
+              {% if user.last_name %}<p>Фамилия: {{ user.last_name }}</p>{% endif %}
+              {% if user.username %}<p>Username: {{ user.username }}</p>{% endif %}
+              {% if user.email %}<p>Эл. почта: {{ user.email }}</p>{% endif %}
+              <a class="btn btn-outline-dark my-3 float-right" href="#" role="button">Редактировать</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card">
+            <div class="card-header">Карточка санты</div>
+            <div class="card-body">
+              Список желаний:
+              <div style="border: 1px solid;" class="p-2 my-3">{{ santa.wishlist | linebreaks }}</div>
+              Письмо Санте:
+              <div style="border: 1px solid;" class="p-2 my-3">{{ santa.letter_to_santa }}</div>
+              <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h3><span class="badge bg-dark text-light">Игры</span></h3>
+      <div class="row my-3">
+
+        <div class="col-9">
+          <div class="card">
+            <div class="card-header">Организатор игр</div>
+            <div class="card-body">
+                {% if coordinator_games %}
+                  <div class="row py-3" style="border-bottom: 1px solid;">
+                    <div class="col">Название</div>
+                    <div class="col">Сумма подарка</div>
+                    <div class="col">Дата жеребьёвки</div>
+                    <div class="col">Дата подарка</div>
+                  </div>
+                  {% for game in coordinator_games %}
+                  <div class="row py-3" style="border-bottom: 1px solid;">
+                    <div class="col">
+                      <a href="{% url 'update_game' game.pk %}" class="text-dark"><span style="text-decoration: underline;">{{ game.name }}</span></a>
+                    </div>
+                    <div class="col">{% if game.max_price%}{{ game.max_price }}{% else %}-{% endif %}</div>
+                    <div class="col">{{ game.draw_date | date:"Y-m-d" }}</div>
+                    <div class="col">{{ game.gift_date | date:"Y-m-d" }}</div>
+                  </div>
+                  {% endfor %}
+                {% else %}
+                  <div>Вы пока не организовали ни одной игры</div>
+                {% endif %}
+                <p class="my-3">* нажмите на игру для редактирования</p>
+                <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">Участник игр</div>
+            <div class="card-body">
+            {% if santa_games %}
+              {% for santa_game in santa_games %}
+                <p>{{ santa_game.name }}</p>
               {% endfor %}
             {% else %}
-              <div>Вы пока не организовали ни одной игры</div>
+              <div>Вы пока не участвуете ни в одной игре</div>
             {% endif %}
-            <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
+            </div>
           </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">Участвуете в играх:</div>
-        <div class="card-body">
-        {% if santa_games %}
-        <ul>
-          {% for santa_game in santa_games %}
-            <li>{{ santa_game.name }}</li>
-          {% endfor %}
-        </ul>
-        {% else %}
-          <div>Вы пока не участвуете ни в одной игре</div>
-        {% endif %}
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">Карточка санты:</div>
-        <div class="card-body">
-          <form method="get">
-            {{ form.as_p }}
-            <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать карточку</a>
-          </form>
-        </div>
       </div>
-
     </div>
   </div>
 {% endblock %}

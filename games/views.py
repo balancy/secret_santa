@@ -27,14 +27,13 @@ def index(request):
 def view_profile(request):
     user = request.user
     santa = Santa.objects.get(user=user)
-    customuser = CustomUser.objects.get(username=user)
     santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
-    coordinator_games = Game.objects.filter(coordinator=customuser)
-    form = SantaCardForm(instance=santa)
+    coordinator_games = Game.objects.filter(coordinator=user)
     context = {
+        'user': user,
         'santa_games': santa_games,
         'coordinator_games': coordinator_games,
-        'form': form,
+        'santa': santa,
     }
     return render(request, 'games/profile.html', context=context)
 
@@ -105,13 +104,8 @@ def update_santa_card(request):
 
 def create_bitlink(link):
     url = 'https://api-ssl.bitly.com/v4/bitlinks'
-    headers = {
-        'Authorization': f'Bearer {bitly_token}'
-    }
-    payload = {
-        'long_url': link,
-        'domain': 'bit.ly'
-    }
+    headers = {'Authorization': f'Bearer {bitly_token}'}
+    payload = {'long_url': link, 'domain': 'bit.ly'}
     res = requests.post(url, json=payload, headers=headers)
     return res.json()['id']
 
@@ -125,7 +119,8 @@ def create_game(request):
         if form.is_valid():
             new_game = form.save()
             current_page_url = request.build_absolute_uri(
-                reverse('invited_person_registration', args=[new_game.pk]))
+                reverse('invited_person_registration', args=[new_game.pk])
+            )
             print(current_page_url)
             bitly_url = create_bitlink(current_page_url)
             new_game.url = bitly_url
@@ -201,12 +196,12 @@ def invited_person_registration(request, pk):
     form = UpdateGameForm(instance=game)
     santa = Santa.objects.get(user=request.user)
     santa.games.add(game)
-    context = {
-        'game': game,
-        'form': form
-    }
-    return render(request, 'games/invited_person_registration.html',
-                  context=context)
+    context = {'game': game, 'form': form}
+    return render(
+        request, 'games/invited_person_registration.html', context=context
+    )
+
+
 # else:
 #     print('no')
 #     return render(request, 'games/register.html')
