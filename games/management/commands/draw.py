@@ -27,10 +27,10 @@ def make_and_send_email_message(game, from_adress):
         body_text = (
             f'Жеребьевка в игре {game.name} проведена!\r\n' +
             'Спешу сообщить кто тебе выпал.\r\n' +
-            'Ваш игрок: {draw.receiver.user.username}\r\n' +
-            'Адрес эл. почты: {draw.receiver.user.email}\r\n' +
-            'Письмо Санте: {draw.receiver.letter_to_santa}\r\n' +
-            'Вишлист: {draw.receiver.wishlist}'
+            f'Ваш игрок: {draw.receiver.user.username}\r\n' +
+            f'Адрес эл. почты: {draw.receiver.user.email}\r\n' +
+            f'Письмо Санте: {draw.receiver.letter_to_santa}\r\n' +
+            f'Вишлист: {draw.receiver.wishlist}\r\n'
         )
 
         send_email(

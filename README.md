@@ -35,7 +35,7 @@ smtp_port="25"
 mail_server_login="login"
 mail_server_password="password"
 from_adress="you@youdomain.com"
-use_ssl=True
+use_tls=True
 ```
 If your smtp server use SSL set use_ssl to True or False if not.
 
