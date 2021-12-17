@@ -1,6 +1,5 @@
 import datetime
 import os
-import smtplib
 
 from collections import deque
 from django.core.mail import send_mail
@@ -11,17 +10,6 @@ from games.models import Game, Santa, Draw, Exclusion
 
 
 def send_email(subject, to_addr, from_addr, body_text):
-    # email_body = (
-    #     f'From: {from_addr}\r\n' +
-    #     'To: {to_addr}\r\n' +
-    #     'Subject: {subject}\r\n{body_text}'
-    # )
-    # msg = EmailMessage()
-    # msg.set_content(body_text)
-    # msg["Subject"] = subject
-    # msg["From"] = from_addr
-    # msg["To"] = to_addr
-
     send_mail(
         subject,
         body_text,
@@ -29,7 +17,6 @@ def send_email(subject, to_addr, from_addr, body_text):
         [to_addr],
         fail_silently=False,
     )
-    # smtp_server.send_message(msg)
 
 
 def make_and_send_email_message(game, from_adress):
@@ -108,14 +95,6 @@ def make_draw(game):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         from_adress = os.getenv('from_adress')
-        # smtp_server = smtplib.SMTP_SSL(
-        #     os.getenv('smtp_host'),
-        #     port=os.getenv('smtp_port')
-        # )
-        # smtp_server.login(
-        #     os.getenv('mail_server_login'),
-        #     os.getenv('mail_server_password')
-        # )
 
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -123,5 +102,3 @@ class Command(BaseCommand):
         for game in games:
             make_draw(game)
             make_and_send_email_message(game, from_adress)
-
-        # smtp_server.quit()
