@@ -34,7 +34,7 @@ def view_profile(request):
     context = {
         'santa_games': santa_games,
         'coordinator_games': coordinator_games,
-        'form': form
+        'form': form,
     }
     return render(request, 'games/profile.html', context=context)
 
@@ -125,6 +125,8 @@ def update_game(request, pk):
     if game.coordinator != user:
         return redirect(reverse_lazy('profile'))
 
+    santas = Santa.objects.filter(games=game)
+
     if request.method == 'POST':
         form = UpdateGameForm(request.POST, instance=game)
 
@@ -132,11 +134,19 @@ def update_game(request, pk):
             form.save()
             return redirect(reverse_lazy('profile'))
 
-        return render(request, 'games/update_game.html', {'form': form})
+        return render(
+            request,
+            'games/update_game.html',
+            {'form': form, 'santas': santas, 'game': game},
+        )
 
     form = UpdateGameForm(instance=game)
 
-    return render(request, 'games/update_game.html', {'form': form})
+    return render(
+        request,
+        'games/update_game.html',
+        {'form': form, 'santas': santas, 'game': game},
+    )
 
 
 def greeting_page(request):

@@ -79,6 +79,20 @@
         </button>
       </form>
     </div>
+    <hr>
+    <div class="card-body">
+      <p class="mb-3">Участники:</p>
+      {% for santa in santas %}
+        <div class="row">
+          <div class="col-3">
+            {{ forloop.counter }}. {{ santa.user.username }}
+          </div>
+          <div class="col-3">
+            <a href="#" class="text-danger">удалить</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 
 <script>
