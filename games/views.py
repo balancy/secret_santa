@@ -18,8 +18,6 @@ from .models import Santa, Game, CustomUser
 
 
 def index(request):
-    if request.user.is_authenticated:
-        return redirect(reverse_lazy('profile'))
     return render(request, 'games/index.html')
 
 
