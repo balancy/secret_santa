@@ -136,3 +136,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'games.CustomUser'
+
+
+# SMTP settings
+EMAIL_HOST = os.getenv('smtp_host')
+EMAIL_PORT = os.getenv('smtp_port')
+EMAIL_HOST_USER = os.getenv('mail_server_login')
+EMAIL_HOST_PASSWORD = os.getenv('mail_server_password')
+EMAIL_USE_SSL = os.getenv('use_ssl')
