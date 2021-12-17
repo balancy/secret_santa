@@ -1,13 +1,12 @@
 import datetime
 
-import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 
-from secret_santa.settings import bitly_token
 from .forms import (
     CreateGameForm,
     LoginUserForm,
@@ -15,7 +14,7 @@ from .forms import (
     SantaCardForm,
     UpdateGameForm,
 )
-from .helpers import create_santa_for_user
+from .helpers import create_santa_for_user, create_bitlink
 from .models import Santa, Game, CustomUser, Exclusion
 
 
@@ -102,26 +101,16 @@ def update_santa_card(request):
     return render(request, 'games/santa_card.html', context={'form': form})
 
 
-def create_bitlink(link):
-    url = 'https://api-ssl.bitly.com/v4/bitlinks'
-    headers = {'Authorization': f'Bearer {bitly_token}'}
-    payload = {'long_url': link, 'domain': 'bit.ly'}
-    res = requests.post(url, json=payload, headers=headers)
-    return res.json()['id']
-
-
 @login_required(login_url='login')
 def create_game(request):
     user = request.user
     if request.method == 'POST':
         form = CreateGameForm(request.POST)
-
         if form.is_valid():
             new_game = form.save()
             current_page_url = request.build_absolute_uri(
                 reverse('invited_person_registration', args=[new_game.pk])
             )
-            print(current_page_url)
             bitly_url = create_bitlink(current_page_url)
             new_game.url = bitly_url
             new_game.save()
@@ -198,19 +187,37 @@ def greeting_page(request):
     return render(request, 'games/greeting_page.html')
 
 
-@login_required(login_url='login')
+def congrat_page(request):
+    return render(request, 'games/congrat_page.html')
+
+
 def invited_person_registration(request, pk):
-
     game = get_object_or_404(Game, pk=pk)
-    form = UpdateGameForm(instance=game)
-    santa = Santa.objects.get(user=request.user)
-    santa.games.add(game)
-    context = {'game': game, 'form': form}
-    return render(
-        request, 'games/invited_person_registration.html', context=context
-    )
-
-
-# else:
-#     print('no')
-#     return render(request, 'games/register.html')
+    if isinstance(request.user, AnonymousUser) and request.method == 'GET':
+        form = RegistrationForm()
+        context = {'form': form}
+        return render(request, 'games/invited_person_registration.html', context=context)
+    elif isinstance(request.user, AnonymousUser) and request.method == 'POST':
+        if request.method == 'POST':
+            form = RegistrationForm(request.POST)
+            if form.is_valid():
+                new_user = form.save()
+                create_santa_for_user(
+                    new_user,
+                    form.cleaned_data['wishlist'],
+                    form.cleaned_data['letter_to_santa'],
+                )
+                new_user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1'],
+                )
+                login(request, new_user)
+                santa = Santa.objects.get(user=new_user)
+                santa.games.add(game)
+        return redirect(reverse_lazy('congrat_page'))
+    else:
+        form = UpdateGameForm(instance=game)
+        santa = Santa.objects.get(user=request.user)
+        santa.games.add(game)
+        context = {'game': game, 'form': form}
+        return render(request, 'games/invited_person_registration.html', context=context)

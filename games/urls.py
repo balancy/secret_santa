@@ -33,4 +33,5 @@ urlpatterns = [
         name='remove_exclusion_from_game',
     ),
     path('greeting/', views.greeting_page, name='greeting_page'),
+    path('congrat_page/', views.congrat_page, name='congrat_page'),
     ]
