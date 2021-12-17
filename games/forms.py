@@ -36,7 +36,14 @@ class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = (
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'password1',
+            'password2',
+        )
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
