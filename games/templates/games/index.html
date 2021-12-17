@@ -6,8 +6,8 @@
 
 {% block content %}
     <img src="{% static 'santa.jpg' %}" width="100%">
-    <div class="mt-5">
-      <h3>Тайный санта</h3>
+    <div class="bg-light p-5">
+      <h3><span class="badge bg-dark text-light">Тайный санта</span></h3>
       <p class="my-3">Организуй тайный обмен подарками между друзьями или коллегами</p>
       <div class="pb-5 mb-5">
         {% if user.is_authenticated %}
@@ -17,7 +17,7 @@
         {% endif %}
       </div>
       <hr>
-      <h5>Как это работает?</h5>
+      <h3><span class="badge bg-dark text-light">Как это работает?</span></h3>
       <div class="row my-5">
         <div class="col col-6 pr-4">
             <div class="card border-dark">
