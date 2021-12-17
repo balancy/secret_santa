@@ -1,0 +1,20 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% block header %}
+    <title>Страница приветствия</title>
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+  {% if user.is_authenticated %}
+    <div class="card-header">
+      Привет, {{ user }}! Замечательно, что ты собираешься участвовать в игре:
+    </div>
+    <div class="card-body">
+      <form method="get">
+        {{ form.as_p }}
+      </form>
+    </div>
+  {% endif %}
+  </div>
+{% endblock %}

@@ -136,3 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'games.CustomUser'
+
+# Tokens
+
+bitly_token = os.getenv('BITLY_TOKEN')

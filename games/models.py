@@ -8,6 +8,12 @@ class CustomUser(AbstractUser):
 
 
 class Game(models.Model):
+    url = models.URLField(
+        'ссылка на игру',
+        null=True,
+        blank=True,
+    )
+
     name = models.CharField(
         'название',
         max_length=30,
