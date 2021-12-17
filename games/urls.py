@@ -27,5 +27,10 @@ urlpatterns = [
         views.remove_santa_from_game,
         name='remove_santa_from_game',
     ),
+    path(
+        'remove_exclusion_from_game/<int:game_pk>/<int:exclusion_pk>/',
+        views.remove_exclusion_from_game,
+        name='remove_exclusion_from_game',
+    ),
     path('greeting/', views.greeting_page, name='greeting_page'),
     ]

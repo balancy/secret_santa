@@ -93,6 +93,22 @@
         </div>
       {% endfor %}
     </div>
+    <div class="card-body">
+      <p class="mb-3">Пары исключения:</p>
+      {% for exclusion in exclusions %}
+        <div class="row">
+          <div class="col-3">
+            {{ forloop.counter }}. {{ exclusion.giver.user.username }}
+          </div>
+          <div class="col-3">
+            {{ exclusion.receiver.user.username }}
+          </div>
+          <div class="col-3">
+            <a href="{% url 'remove_exclusion_from_game' game.pk exclusion.pk %}" type="button" class="text-danger">удалить</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 
 <script>
