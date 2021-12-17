@@ -20,8 +20,6 @@ from .models import Santa, Game, CustomUser
 
 
 def index(request):
-    if request.user.is_authenticated:
-        return redirect(reverse_lazy('profile'))
     return render(request, 'games/index.html')
 
 
@@ -36,7 +34,7 @@ def view_profile(request):
     context = {
         'santa_games': santa_games,
         'coordinator_games': coordinator_games,
-        'form': form
+        'form': form,
     }
     return render(request, 'games/profile.html', context=context)
 
@@ -54,7 +52,7 @@ class LogoutUserView(LogoutView):
     next_page = 'index'
 
 
-def register_user(request):
+def register_user(request, pk=None):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
@@ -76,11 +74,19 @@ def register_user(request):
             login(request, new_user)
             return redirect(reverse_lazy('profile'))
 
-        return render(request, 'games/register_user.html', {'form': form})
+        return render(
+            request,
+            'games/register_user.html',
+            {'form': form, 'is_invited': bool(pk)},
+        )
 
     form = RegistrationForm()
 
-    return render(request, 'games/register_user.html', {'form': form})
+    return render(
+        request,
+        'games/register_user.html',
+        {'form': form, 'is_invited': bool(pk)},
+    )
 
 
 @login_required(login_url='login')
@@ -146,6 +152,8 @@ def update_game(request, pk):
     if game.coordinator != user:
         return redirect(reverse_lazy('profile'))
 
+    santas = Santa.objects.filter(games=game)
+
     if request.method == 'POST':
         form = UpdateGameForm(request.POST, instance=game)
 
@@ -153,11 +161,33 @@ def update_game(request, pk):
             form.save()
             return redirect(reverse_lazy('profile'))
 
-        return render(request, 'games/update_game.html', {'form': form})
+        return render(
+            request,
+            'games/update_game.html',
+            {'form': form, 'santas': santas, 'game': game},
+        )
 
     form = UpdateGameForm(instance=game)
 
-    return render(request, 'games/update_game.html', {'form': form})
+    return render(
+        request,
+        'games/update_game.html',
+        {'form': form, 'santas': santas, 'game': game},
+    )
+
+
+@login_required(login_url='login')
+def remove_santa_from_game(request, game_pk, santa_pk):
+    user = request.user
+    game = Game.objects.get(pk=game_pk)
+
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
+
+    santa = Santa.objects.get(pk=santa_pk)
+    santa.games.remove(game)
+
+    return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
 
 
 def greeting_page(request):
