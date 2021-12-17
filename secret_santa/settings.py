@@ -139,7 +139,7 @@ AUTH_USER_MODEL = 'games.CustomUser'
 
 # Tokens
 
-bitly_token = os.getenv('BITLY_TOKEN')
+BITLY_TOKEN = os.getenv('BITLY_TOKEN')
 
 # SMTP settings
 EMAIL_HOST = os.getenv('smtp_host')

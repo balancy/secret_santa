@@ -31,7 +31,7 @@
               Список желаний:
               <div style="border: 1px solid;" class="p-2 my-3">{{ santa.wishlist | linebreaks }}</div>
               Письмо Санте:
-              <div style="border: 1px solid;" class="p-2 my-3">{{ santa.letter_to_santa }}</div>
+              <div style="border: 1px solid;" class="p-2 my-3">{{ santa.letter_to_santa | linebreaks}}</div>
               <a class="btn btn-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать</a>
             </div>
           </div>

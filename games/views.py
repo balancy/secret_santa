@@ -15,10 +15,7 @@ from .forms import (
     UpdateGameForm,
     UpdateUserForm,
 )
-
-from .helpers import create_santa_for_user, create_bitlink
-from .models import Santa, Game, CustomUser, Exclusion
-from .helpers import create_santa_for_user
+from .helpers import create_bitlink, create_santa_for_user
 from .models import Santa, Game, Exclusion
 
 
@@ -58,6 +55,8 @@ def register_user(request, pk=None):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
+    game = Game.objects.filter(pk=pk).first()
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
 
@@ -79,7 +78,7 @@ def register_user(request, pk=None):
         return render(
             request,
             'games/register_user.html',
-            {'form': form, 'is_invited': bool(pk)},
+            {'form': form, 'pk': pk, 'game': game},
         )
 
     form = RegistrationForm()
@@ -87,7 +86,7 @@ def register_user(request, pk=None):
     return render(
         request,
         'games/register_user.html',
-        {'form': form, 'is_invited': bool(pk)},
+        {'form': form, 'pk': pk, 'game': game},
     )
 
 
@@ -125,11 +124,10 @@ def create_game(request):
         form = CreateGameForm(request.POST)
         if form.is_valid():
             new_game = form.save()
-            current_page_url = request.build_absolute_uri(
-                reverse('invited_person_registration', args=[new_game.pk])
+            invite_url = request.build_absolute_uri(
+                reverse('register', args=[new_game.pk])
             )
-            bitly_url = create_bitlink(current_page_url)
-            new_game.url = bitly_url
+            new_game.url = create_bitlink(invite_url)
             new_game.save()
 
             if form.cleaned_data['is_santa']:
@@ -211,35 +209,3 @@ def greeting_page(request):
 
 def congrat_page(request):
     return render(request, 'games/congrat_page.html')
-
-
-def invited_person_registration(request, pk):
-    game = get_object_or_404(Game, pk=pk)
-    if isinstance(request.user, AnonymousUser) and request.method == 'GET':
-        form = RegistrationForm()
-        context = {'form': form}
-        return render(request, 'games/invited_person_registration.html', context=context)
-    elif isinstance(request.user, AnonymousUser) and request.method == 'POST':
-        if request.method == 'POST':
-            form = RegistrationForm(request.POST)
-            if form.is_valid():
-                new_user = form.save()
-                create_santa_for_user(
-                    new_user,
-                    form.cleaned_data['wishlist'],
-                    form.cleaned_data['letter_to_santa'],
-                )
-                new_user = authenticate(
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password1'],
-                )
-                login(request, new_user)
-                santa = Santa.objects.get(user=new_user)
-                santa.games.add(game)
-        return redirect(reverse_lazy('congrat_page'))
-    else:
-        form = UpdateGameForm(instance=game)
-        santa = Santa.objects.get(user=request.user)
-        santa.games.add(game)
-        context = {'game': game, 'form': form}
-        return render(request, 'games/invited_person_registration.html', context=context)
