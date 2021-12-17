@@ -13,5 +13,4 @@ def create_bitlink(link):
     payload = {'long_url': link, 'domain': 'bit.ly'}
     res = requests.post(url, json=payload, headers=headers)
     res.raise_for_status()
-    print(res.status_code)
     return res.json()['id']
