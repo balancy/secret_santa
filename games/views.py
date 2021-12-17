@@ -149,5 +149,19 @@ def update_game(request, pk):
     )
 
 
+@login_required(login_url='login')
+def remove_santa_from_game(request, game_pk, santa_pk):
+    user = request.user
+    game = Game.objects.get(pk=game_pk)
+
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
+
+    santa = Santa.objects.get(pk=santa_pk)
+    santa.games.remove(game)
+
+    return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
+
+
 def greeting_page(request):
     return render(request, 'games/greeting_page.html')

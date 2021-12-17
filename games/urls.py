@@ -12,5 +12,10 @@ urlpatterns = [
     path('santacard', views.update_santa_card, name='santacard'),
     path('create_game', views.create_game, name='create_game'),
     path('update_game/<int:pk>', views.update_game, name='update_game'),
+    path(
+        'remove_santa_from_game/<int:game_pk>/<int:santa_pk>',
+        views.remove_santa_from_game,
+        name='remove_santa_from_game',
+    ),
     path('greeting', views.greeting_page, name='greeting_page'),
 ]
