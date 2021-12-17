@@ -52,7 +52,7 @@ class LogoutUserView(LogoutView):
     next_page = 'index'
 
 
-def register_user(request):
+def register_user(request, pk=None):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
@@ -74,11 +74,19 @@ def register_user(request):
             login(request, new_user)
             return redirect(reverse_lazy('profile'))
 
-        return render(request, 'games/register_user.html', {'form': form})
+        return render(
+            request,
+            'games/register_user.html',
+            {'form': form, 'is_invited': bool(pk)},
+        )
 
     form = RegistrationForm()
 
-    return render(request, 'games/register_user.html', {'form': form})
+    return render(
+        request,
+        'games/register_user.html',
+        {'form': form, 'is_invited': bool(pk)},
+    )
 
 
 @login_required(login_url='login')

@@ -31,27 +31,29 @@
         {% endfor %}
         <p>* поля, выделенные жирным, являются обязательными для заполнения</p>
         <hr>
-        <div class="can_hide">
-          <p class="my-3"><strong>Карточка Санты</strong></p>
-          <p>Желательные, но не обязательные поля для подбора более точного подарка</p>
-          {% for field in form%}
-            {% if field.name in 'wishlist,letter_to_santa' %}
-              <div class="row">
-                  <div class="col my-2 col-4">
-                    {% if field.field.required %}
-                      <strong>{{ field.label_tag }}</strong>
-                    {% else %}
-                      {{ field.label_tag }}
-                    {% endif %}
-                  </div>
-                  <div class="col my-2 col-8">
-                    {{ field }}
-                  </div>
-                <span class="red">{{ field.errors }}</span>
-              </div>
-            {% endif %}
-            {% endfor %}
-        </div>
+        {% if is_invited %}
+          <div>
+            <p class="my-3"><strong>Карточка Санты</strong></p>
+            <p>Желательные, но не обязательные поля для подбора более точного подарка</p>
+            {% for field in form%}
+              {% if field.name in 'wishlist,letter_to_santa' %}
+                <div class="row">
+                    <div class="col my-2 col-4">
+                      {% if field.field.required %}
+                        <strong>{{ field.label_tag }}</strong>
+                      {% else %}
+                        {{ field.label_tag }}
+                      {% endif %}
+                    </div>
+                    <div class="col my-2 col-8">
+                      {{ field }}
+                    </div>
+                  <span class="red">{{ field.errors }}</span>
+                </div>
+              {% endif %}
+              {% endfor %}
+          </div>
+        {% endif %}
         <button class="btn btn-outline-dark my-3 float-right" type="submit">
           Зарегистрироваться
         </button>
