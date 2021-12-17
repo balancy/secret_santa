@@ -13,9 +13,13 @@ from .forms import (
     RegistrationForm,
     SantaCardForm,
     UpdateGameForm,
+    UpdateUserForm,
 )
+
 from .helpers import create_santa_for_user, create_bitlink
 from .models import Santa, Game, CustomUser, Exclusion
+from .helpers import create_santa_for_user
+from .models import Santa, Game, Exclusion
 
 
 def index(request):
@@ -102,6 +106,19 @@ def update_santa_card(request):
 
 
 @login_required(login_url='login')
+def update_user(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UpdateUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+        return redirect(reverse_lazy('profile'))
+
+    form = UpdateUserForm(instance=user)
+    return render(request, 'games/update_user.html', context={'form': form})
+
+
+@login_required(login_url='login')
 def create_game(request):
     user = request.user
     if request.method == 'POST':
@@ -157,7 +174,12 @@ def update_game(request, pk):
     return render(
         request,
         'games/update_game.html',
-        {'form': form, 'santas': santas, 'game': game, 'exclusions': exclusions},
+        {
+            'form': form,
+            'santas': santas,
+            'game': game,
+            'exclusions': exclusions,
+        },
     )
 
 
