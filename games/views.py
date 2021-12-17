@@ -16,7 +16,7 @@ from .forms import (
     UpdateGameForm,
 )
 from .helpers import create_santa_for_user
-from .models import Santa, Game, CustomUser
+from .models import Santa, Game, CustomUser, Exclusion
 
 
 def index(request):
@@ -153,6 +153,7 @@ def update_game(request, pk):
         return redirect(reverse_lazy('profile'))
 
     santas = Santa.objects.filter(games=game)
+    exclusions = Exclusion.objects.filter(game=game)
 
     if request.method == 'POST':
         form = UpdateGameForm(request.POST, instance=game)
@@ -172,7 +173,7 @@ def update_game(request, pk):
     return render(
         request,
         'games/update_game.html',
-        {'form': form, 'santas': santas, 'game': game},
+        {'form': form, 'santas': santas, 'game': game, 'exclusions': exclusions},
     )
 
 
@@ -186,6 +187,14 @@ def remove_santa_from_game(request, game_pk, santa_pk):
 
     santa = Santa.objects.get(pk=santa_pk)
     santa.games.remove(game)
+
+    return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
+
+
+@login_required(login_url='login')
+def remove_exclusion_from_game(request, game_pk, exclusion_pk):
+    exclusion = Exclusion.objects.get(pk=exclusion_pk)
+    exclusion.delete()
 
     return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
 
