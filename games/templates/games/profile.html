@@ -6,10 +6,9 @@
 
 {% block content %}
   <div class="card  border-dark">
-    <div class="card-header">Личный кабинет</div>
+    <div class="card-header"><strong>Профиль</strong></div>
     <div class="card-body">
 
-      <h3><span class="badge bg-dark text-light">Профиль</span></h3>
       <div class="row my-3">
 
         <div class="col">
@@ -39,8 +38,11 @@
         </div>
 
       </div>
+    </div>
 
-      <h3><span class="badge bg-dark text-light">Игры</span></h3>
+    <div class="card-header"><strong>Игры</strong></div>
+    <div class="card-body">
+
       <div class="row my-3">
 
         <div class="col-9">
@@ -64,10 +66,10 @@
                     <div class="col">{{ game.gift_date | date:"Y-m-d" }}</div>
                   </div>
                   {% endfor %}
+                  <p class="my-3">* нажмите на игру для редактирования</p>
                 {% else %}
                   <div>Вы пока не организовали ни одной игры</div>
                 {% endif %}
-                <p class="my-3">* нажмите на игру для редактирования</p>
                 <a class="btn btn-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
             </div>
           </div>
