@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -72,11 +72,17 @@ class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
         widgets = {
             'coordinator': forms.HiddenInput(),
             'draw_date': forms.DateInput(
-                attrs={'type': 'date'},
+                attrs={
+                    'type': 'date',
+                    'value': date.today() + timedelta(weeks=1),
+                },
                 format=('%Y-%m-%d'),
             ),
             'gift_date': forms.DateInput(
-                attrs={'type': 'date'},
+                attrs={
+                    'type': 'date',
+                    'value': date.today() + timedelta(weeks=2),
+                },
                 format=('%Y-%m-%d'),
             ),
         }
