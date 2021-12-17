@@ -28,6 +28,15 @@ python manage.py migrate
 ```
 Change **full_path_to_your_manage_py_script** to the full path to your manage.py script location.
 
+4. Create .env file in project folder and add your SMTP server's settings:
+```
+smtp_host="smtp.youdomain.com"
+smtp_port="25"
+mail_server_login="login"
+mail_server_password="password"
+from_adress="you@youdomain.com"
+```
+
 ## Launch the app
 
 ```
