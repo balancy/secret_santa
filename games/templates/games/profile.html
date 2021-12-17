@@ -20,7 +20,7 @@
               {% if user.last_name %}<p>Фамилия: {{ user.last_name }}</p>{% endif %}
               {% if user.username %}<p>Username: {{ user.username }}</p>{% endif %}
               {% if user.email %}<p>Эл. почта: {{ user.email }}</p>{% endif %}
-              <a class="btn btn-outline-dark my-3 float-right" href="#" role="button">Редактировать</a>
+              <a class="btn btn-dark my-3 float-right" href="#" role="button">Редактировать</a>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
               <div style="border: 1px solid;" class="p-2 my-3">{{ santa.wishlist | linebreaks }}</div>
               Письмо Санте:
               <div style="border: 1px solid;" class="p-2 my-3">{{ santa.letter_to_santa }}</div>
-              <a class="btn btn-outline-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать</a>
+              <a class="btn btn-dark my-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать</a>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
                   <div>Вы пока не организовали ни одной игры</div>
                 {% endif %}
                 <p class="my-3">* нажмите на игру для редактирования</p>
-                <a class="btn btn-outline-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
+                <a class="btn btn-dark my-3 float-right" href="{% url 'create_game' %}" role="button">Создать игру</a>
             </div>
           </div>
         </div>
