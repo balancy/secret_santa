@@ -19,7 +19,7 @@
               {% if user.last_name %}<p>Фамилия: {{ user.last_name }}</p>{% endif %}
               {% if user.username %}<p>Username: {{ user.username }}</p>{% endif %}
               {% if user.email %}<p>Эл. почта: {{ user.email }}</p>{% endif %}
-              <a class="btn btn-dark my-3 float-right" href="#" role="button">Редактировать</a>
+              <a class="btn btn-dark my-3 float-right" href="{% url 'update_user' %}" role="button">Редактировать</a>
             </div>
           </div>
         </div>

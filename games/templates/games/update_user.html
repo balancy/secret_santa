@@ -1,0 +1,42 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% block header %}
+    <title>Данные пользователя</title>
+{% endblock %}
+
+{% block content %}
+  <div class="card  border-dark">
+    <div class="card-header">
+      Данные пользователя
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form%}
+          <div class="row">
+            <div class="col my-2 col-4">
+              {{ field.label_tag }}
+            </div>
+            <div class="col my-2 col-8">
+              {{ field }}
+            </div>
+            <span class="red">{{ field.errors }}</span>
+          </div>
+        {% endfor %}
+
+        <div class="row">
+          <div class="col">
+            <a class="btn btn-outline-dark my-3" href="{% url 'profile'%}" type="button">
+              Вернуться в ЛК
+            </a>
+          </div>
+          <div class="col">
+            <button class="btn btn-dark my-3 float-right" type="submit">
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

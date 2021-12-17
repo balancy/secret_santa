@@ -18,7 +18,13 @@ class FormPrettifyFieldsMixin(forms.Form):
 class SantaCardForm(forms.ModelForm, FormPrettifyFieldsMixin):
     class Meta:
         model = Santa
-        fields = ['wishlist', 'letter_to_santa']
+        fields = ('wishlist', 'letter_to_santa')
+
+
+class UpdateUserForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email', 'first_name', 'last_name')
 
 
 class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
