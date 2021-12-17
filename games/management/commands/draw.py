@@ -75,14 +75,29 @@ def make_rotation(pairs, exclusions):
     return pairs
 
 
+def is_exclusions_in_pairs(pairs, exclusions):
+    for exclusion in exclusions:
+        if (exclusion in pairs):
+            return True
+    return False
+
+
 def make_draw(game):
-    santas = Santa.objects.filter(games=game)
+    santas = Santa.objects.filter(games=game).order_by('?')
 
     partners = deque(santas)
     partners.rotate()
     pairs = list(zip(santas, partners))
 
-    modified_pairs = make_rotation(pairs, get_pair_exclusion(game))
+    exclusions = get_pair_exclusion(game)
+
+    modified_pairs = make_rotation(pairs, exclusions)
+
+    while True:
+        if is_exclusions_in_pairs(modified_pairs, exclusions):
+            modified_pairs = make_rotation(pairs, exclusions)
+        else:
+            break
 
     for giver, receiver in modified_pairs:
         draw = Draw.objects.get_or_create(
