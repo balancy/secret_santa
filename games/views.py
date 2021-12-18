@@ -2,9 +2,8 @@ import datetime
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 
 from .forms import (
@@ -15,7 +14,12 @@ from .forms import (
     UpdateGameForm,
     UpdateUserForm,
 )
-from .helpers import create_bitlink, create_santa_for_user
+from .helpers import (
+    create_bitlink,
+    create_santa_for_user,
+    hash_value,
+    is_hash_correct,
+)
 from .models import Santa, Game, Exclusion
 
 
@@ -51,11 +55,15 @@ class LogoutUserView(LogoutView):
     next_page = 'index'
 
 
-def register_user(request, pk=None):
+def register_user(request, hashed_pk=None):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
-    game = Game.objects.filter(pk=pk).first()
+    if is_hash_correct(hashed_pk):
+        _, pk = hashed_pk.split('_')
+        game = Game.objects.filter(pk=pk).first()
+    else:
+        game = None
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -124,8 +132,9 @@ def create_game(request):
         form = CreateGameForm(request.POST)
         if form.is_valid():
             new_game = form.save()
+
             invite_url = request.build_absolute_uri(
-                reverse('register', args=[new_game.pk])
+                reverse('register', args=[hash_value(new_game.pk)])
             )
             new_game.url = create_bitlink(invite_url)
             new_game.save()

@@ -32,6 +32,7 @@ class GameAdmin(admin.ModelAdmin):
         'max_price',
         'draw_date',
         'gift_date',
+        'url',
     )
     list_display_links = ('id', 'name')
 

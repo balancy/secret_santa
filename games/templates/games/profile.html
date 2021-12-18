@@ -52,7 +52,7 @@
                 {% if coordinator_games %}
                   <div class="row py-3" style="border-bottom: 1px solid;">
                     <div class="col">Название</div>
-                    <div class="col">Реферальная ссылка</div>
+                    <div class="col">Реф. ссылка</div>
                     <div class="col">Сумма подарка</div>
                     <div class="col">Дата жеребьёвки</div>
                     <div class="col">Дата подарка</div>
@@ -62,7 +62,7 @@
                     <div class="col">
                       <a href="{% url 'update_game' game.pk %}" class="text-dark"><span style="text-decoration: underline;">{{ game.name }}</span></a>
                     </div>
-                    <div class="col">{{ game.url }}</div>
+                    <div class="col">{% if game.url %}{{ game.url }}{% else %}-{% endif %}</div>
                     <div class="col">{% if game.max_price%}{{ game.max_price }}{% else %}-{% endif %}</div>
                     <div class="col">{{ game.draw_date | date:"Y-m-d" }}</div>
                     <div class="col">{{ game.gift_date | date:"Y-m-d" }}</div>
