@@ -7,7 +7,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - ./.env.prod
     ports:
       - "5432:5432"
 
@@ -16,7 +16,7 @@ services:
     volumes:
       - static_volume:/app/staticfiles
     env_file:
-      - ./.env
+      - ./.env.prod
     build: ./
     ports:
       - "8080:8080"

@@ -3,8 +3,8 @@ Dockerfile
 __pycache__
 docker-compose.yml
 *.sqlite3
+.env*
 .env
-.env.example
 media
 staticfiles
 README.md
