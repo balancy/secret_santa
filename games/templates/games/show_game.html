@@ -1,0 +1,36 @@
+{% extends 'games/base.html' %}
+{% block header %}
+  <title>Игра "{{ game.name }}"</title>
+{% endblock %}
+
+{% block content %}
+  <div class="card border-dark">
+    <div class="card-header">Игра "{{game.name}}"</div>
+    <div class="card-body">
+      <div class="row my-3">
+        <div class="col-4">Название</div>
+        <div class="col">{{ game.name }}</div>
+      </div>
+      <div class="row my-3">
+        <div class="col-4">Макс. стоимость подарка</div>
+        <div class="col">{% if game.max_price %}{{ game.max_price }}{% else %}-{% endif %}</div>
+      </div>
+      <div class="row my-3">
+        <div class="col-4">Дата жеребьёвки</div>
+        <div class="col">{{ game.draw_date }}</div>
+      </div>
+      <div class="row my-3">
+        <div class="col-4">Дата вручения подарка</div>
+        <div class="col">{{ game.gift_date }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <a class="btn btn-outline-dark my-3" href="{% url 'profile'%}" type="button">
+            Вернуться в ЛК
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

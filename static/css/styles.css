@@ -61,3 +61,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.underlined {
+  text-decoration: underline;
+}

@@ -49,25 +49,30 @@
             <div class="card-header">Организатор игр</div>
             <div class="card-body">
                 {% if coordinator_games %}
-                  <div class="row py-3" style="border-bottom: 1px solid;">
-                    <div class="col">Название</div>
-                    <div class="col">Реф. ссылка</div>
-                    <div class="col">Сумма подарка</div>
-                    <div class="col">Дата жеребьёвки</div>
-                    <div class="col">Дата подарка</div>
+                  <div class="row py-2" style="border-bottom: 1px solid;">
+                    <div class="col-3">Название</div>
+                    <div class="col-3">Реф. ссылка</div>
+                    <div class="col-2">Сумма подарка</div>
+                    <div class="col-2">Дата жеребьёвки</div>
+                    <div class="col-2">Дата подарка</div>
                   </div>
                   {% for game in coordinator_games %}
-                  <div class="row py-3" style="border-bottom: 1px solid;">
-                    <div class="col">
-                      <a href="{% url 'update_game' game.pk %}" class="text-dark"><span style="text-decoration: underline;">{{ game.name }}</span></a>
+                    <div class="row py-2" style="border-bottom: 1px solid;">
+                      <div class="col-3">
+                        <a href="{% url 'update_game' game.pk %}" class="text-dark underlined">{{ game.name }}</a>
+                      </div>
+                      <div class="col-3">
+                        {% if game.url %}
+                          <a href="http://{{ game.url }}" class="text-dark underlined">{{ game.url }}</a>
+                        {% else %}
+                          -
+                        {% endif %}
+                      </div>
+                      <div class="col-2">{% if game.max_price%}{{ game.max_price }}{% else %}-{% endif %}</div>
+                      <div class="col-2">{{ game.draw_date | date:"Y-m-d" }}</div>
+                      <div class="col-2">{{ game.gift_date | date:"Y-m-d" }}</div>
                     </div>
-                    <div class="col">{% if game.url %}{{ game.url }}{% else %}-{% endif %}</div>
-                    <div class="col">{% if game.max_price%}{{ game.max_price }}{% else %}-{% endif %}</div>
-                    <div class="col">{{ game.draw_date | date:"Y-m-d" }}</div>
-                    <div class="col">{{ game.gift_date | date:"Y-m-d" }}</div>
-                  </div>
                   {% endfor %}
-                  <p class="my-3">* нажмите на игру для редактирования</p>
                 {% else %}
                   <div>Вы пока не организовали ни одной игры</div>
                 {% endif %}
@@ -79,10 +84,12 @@
         <div class="col-3">
           <div class="card">
             <div class="card-header">Участник игр</div>
-            <div class="card-body">
+            <div class="card-body py-2">
             {% if santa_games %}
-              {% for santa_game in santa_games %}
-                <p>{{ santa_game.name }}</p>
+              {% for game in santa_games %}
+                <div class="row p-2">
+                  <a href="{% url 'show_game' game.pk %}" class="text-dark underlined">{{ game.name }}</a>
+                </div>
               {% endfor %}
             {% else %}
               <div>Вы пока не участвуете ни в одной игре</div>

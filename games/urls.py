@@ -12,7 +12,8 @@ urlpatterns = [
     path('profile', views.view_profile, name='profile'),
     path('santacard', views.update_santa_card, name='santacard'),
     path('create_game', views.create_game, name='create_game'),
-    path('update_game/<int:pk>', views.update_game, name='update_game'),
+    path('show_game/<int:pk>/', views.show_game, name='show_game'),
+    path('update_game/<int:pk>/', views.update_game, name='update_game'),
     path('update_user', views.update_user, name='update_user'),
     path(
         'remove_santa_from_game/<int:game_pk>/<int:santa_pk>/',

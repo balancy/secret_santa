@@ -59,7 +59,7 @@ def register_user(request, hashed_pk=None):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
-    if is_hash_correct(hashed_pk):
+    if hashed_pk and is_hash_correct(hashed_pk):
         _, pk = hashed_pk.split('_')
         game = Game.objects.filter(pk=pk).first()
     else:
@@ -153,9 +153,23 @@ def create_game(request):
 
 
 @login_required(login_url='login')
+def show_game(request, pk):
+    user = request.user
+    game = Game.objects.filter(pk=pk).first()
+
+    if not game:
+        redirect(reverse_lazy('profile'))
+
+    return render(request, 'games/show_game.html', {'game': game})
+
+
+@login_required(login_url='login')
 def update_game(request, pk):
     user = request.user
-    game = Game.objects.get(pk=pk)
+    game = Game.objects.filter(pk=pk).first()
+
+    if not game:
+        redirect(reverse_lazy('profile'))
 
     if game.coordinator != user:
         return redirect(reverse_lazy('profile'))
