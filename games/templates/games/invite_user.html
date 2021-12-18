@@ -45,8 +45,8 @@
         {% else %}
           <div class="mt-5">
             Чтобы принять приглашение, нужно
-            <a href="{% url 'login' is_invited=1 %}" class="text-dark underlined">войти</a>
-            или <a href="{% url 'register' is_invited=1 %}" class="text-dark underlined">зарегистрироваться</a>
+            <a href="{% url 'login' %}" class="text-dark underlined">войти</a>
+            или <a href="{% url 'register' %}" class="text-dark underlined">зарегистрироваться</a>
           </div>
         {% endif %}
 

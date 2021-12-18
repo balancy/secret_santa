@@ -6,10 +6,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login_user, name='login'),
-    path('login/<int:is_invited>/', views.login_user, name='login'),
     path('logout/', views.LogoutUserView.as_view(), name='logout'),
     path('register/', views.register_user, name='register'),
-    path('register/<int:is_invited>/', views.register_user, name='register'),
     path('invite/<str:hashed_pk>/', views.invite_user, name='invite_user'),
     path('profile/', views.view_profile, name='profile'),
     path('santacard/', views.update_santa_card, name='santacard'),

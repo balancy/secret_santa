@@ -42,7 +42,7 @@ def view_profile(request):
     return render(request, 'games/profile.html', context=context)
 
 
-def login_user(request, is_invited=0):
+def login_user(request):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
 
@@ -56,9 +56,9 @@ def login_user(request, is_invited=0):
             new_user = authenticate(username=username, password=password)
             login(request, new_user)
 
-            if is_invited:
+            if game_pk := request.session.get('game_pk'):
                 santa = new_user.santa
-                game = Game.objects.get(pk=request.session['game_pk'])
+                game = Game.objects.get(pk=game_pk)
                 santa.games.add(game)
 
             return redirect(reverse_lazy('profile'))
@@ -97,9 +97,11 @@ def enter_game(request):
     return redirect(reverse_lazy('profile'))
 
 
-def register_user(request, is_invited=0):
+def register_user(request):
     if request.user and request.user.is_authenticated:
         return redirect(reverse_lazy('profile'))
+
+    game_pk = request.session.get('game_pk')
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -118,9 +120,9 @@ def register_user(request, is_invited=0):
             )
             login(request, new_user)
 
-            if is_invited:
+            if game_pk:
                 santa = request.user.santa
-                game = Game.objects.get(pk=request.session['game_pk'])
+                game = Game.objects.get(pk=game_pk)
                 santa.games.add(game)
 
             return redirect(reverse_lazy('profile'))
@@ -128,7 +130,7 @@ def register_user(request, is_invited=0):
         return render(
             request,
             'games/register_user.html',
-            {'form': form, 'is_invited': is_invited},
+            {'form': form, 'is_invited': game_pk},
         )
 
     form = RegistrationForm()
@@ -136,7 +138,7 @@ def register_user(request, is_invited=0):
     return render(
         request,
         'games/register_user.html',
-        {'form': form, 'is_invited': is_invited},
+        {'form': form, 'is_invited': game_pk},
     )
 
 
