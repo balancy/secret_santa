@@ -82,9 +82,13 @@ WSGI_APPLICATION = 'secret_santa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': os.getenv('SQL_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('POSTGRES_DB', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.getenv('SQL_HOST', 'localhost'),
+        'PORT': os.getenv('SQL_PORT', 5432),
+    },
 }
 
 
@@ -133,7 +137,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 AUTH_USER_MODEL = 'games.CustomUser'
 

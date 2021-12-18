@@ -70,15 +70,6 @@ def login_user(request, is_invited=0):
     return render(request, 'games/login.html', context={'form': form})
 
 
-# class LoginUserView(LoginView):
-#     template_name = 'games/login.html'
-#     redirect_authenticated_user = True
-#     form_class = LoginUserForm
-
-#     def get_success_url(self):
-#         return reverse_lazy('profile')
-
-
 class LogoutUserView(LogoutView):
     next_page = 'index'
 
