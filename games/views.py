@@ -78,7 +78,7 @@ def register_user(request, pk=None):
         return render(
             request,
             'games/register_user.html',
-            {'form': form, 'pk': pk, 'game': game},
+            {'form': form, 'game': game},
         )
 
     form = RegistrationForm()
@@ -86,7 +86,7 @@ def register_user(request, pk=None):
     return render(
         request,
         'games/register_user.html',
-        {'form': form, 'pk': pk, 'game': game},
+        {'form': form, 'game': game},
     )
 
 

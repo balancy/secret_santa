@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="card border-dark">
-  {% if pk and game%}
+  {% if game%}
     <div class="card-header border-dark">
       Приглашение
     </div>
@@ -60,7 +60,7 @@
       <p>* поля, выделенные жирным, являются обязательными для заполнения</p>
     </div>
 
-    {% if pk and game%}
+    {% if game%}
       <div class="card-header border-dark" style="border-top: 1px solid;">
         Карточка Санты
       </div>
@@ -85,11 +85,13 @@
             </div>
           {% endif %}
         {% endfor %}
-        </div>
-        <button class="btn btn-dark my-4 float-right mr-3" type="submit">
-          Зарегистрироваться
-        </button>
+      </div>
     {% endif %}
+
+    <button class="btn btn-dark my-4 float-right mr-3" type="submit">
+      Зарегистрироваться
+    </button>
+
   </form>
 </div>
 {% endblock %}
