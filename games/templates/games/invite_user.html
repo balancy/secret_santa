@@ -1,0 +1,56 @@
+{% extends 'games/base.html' %}
+{% block header %}
+  <title>Приглашение на игру</title>
+{% endblock %}
+
+{% block content %}
+  <div class="card border-dark">
+    <div class="card-header">Приглашение на игру</div>
+
+    <div class="card-body">
+      {% if not game%}
+        <div class="pl-3">
+          <div class="row">
+            К сожалению, у тебя некорректная ссылка в приглашении.
+          </div>
+          <div class="row">
+            <a class="btn btn-outline-dark my-3" href="{% url 'index'%}" type="button">
+              Вернуться на главную страницу
+            </a>
+          </div>
+        </div>
+      {% else %}
+        Замечательно, ты собираешься участвовать в игре:
+        <div class="row my-3">
+          <div class="col-4">Название</div>
+          <div class="col">{{ game.name }}</div>
+        </div>
+        <div class="row my-3">
+          <div class="col-4">Макс. стоимость подарка</div>
+          <div class="col">{% if game.max_price %}{{ game.max_price }}{% else %}-{% endif %}</div>
+        </div>
+        <div class="row my-3">
+          <div class="col-4">Дата жеребьёвки</div>
+          <div class="col">{{ game.draw_date }}</div>
+        </div>
+        <div class="row my-3">
+          <div class="col-4">Дата вручения подарка</div>
+          <div class="col">{{ game.gift_date }}</div>
+        </div>
+
+        {% if user.is_authenticated %}
+          <div class="mt-5">
+            Нажмите <a href="{% url 'enter_game' %}" class="text-dark underlined">принять</a>, чтобы принять приглашение
+          </div>
+        {% else %}
+          <div class="mt-5">
+            Чтобы принять приглашение, нужно
+            <a href="{% url 'login' is_invited=1 %}" class="text-dark underlined">войти</a>
+            или <a href="{% url 'register' is_invited=1 %}" class="text-dark underlined">зарегистрироваться</a>
+          </div>
+        {% endif %}
+
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

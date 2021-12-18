@@ -5,12 +5,14 @@
 
 {% block content %}
 <div class="card  border-dark">
-    <div class="card-header">
-      Логин
-    </div>
+    <div class="card-header">Логин</div>
     <div class="card-body">
       <form method="post">
         {% csrf_token %}
+        {% for err in form.non_field_errors %}
+          <p class="red">{{ err }}</p>
+        {% endfor %}
+
         {% for field in form  %}
           <div class="row">
               <div class="col my-2 col-4">

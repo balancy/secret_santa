@@ -42,28 +42,73 @@ def view_profile(request):
     return render(request, 'games/profile.html', context=context)
 
 
-class LoginUserView(LoginView):
-    template_name = 'games/login.html'
-    redirect_authenticated_user = True
-    form_class = LoginUserForm
+def login_user(request, is_invited=0):
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse_lazy('profile'))
 
-    def get_success_url(self):
-        return reverse_lazy('profile')
+    if request.method == 'POST':
+        form = LoginUserForm(data=request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get('password')
+
+            new_user = authenticate(username=username, password=password)
+            login(request, new_user)
+
+            if is_invited:
+                santa = new_user.santa
+                game = Game.objects.get(pk=request.session['game_pk'])
+                santa.games.add(game)
+
+            return redirect(reverse_lazy('profile'))
+
+        print('not valid')
+        return render(request, 'games/login.html', context={'form': form})
+
+    form = LoginUserForm()
+    return render(request, 'games/login.html', context={'form': form})
+
+
+# class LoginUserView(LoginView):
+#     template_name = 'games/login.html'
+#     redirect_authenticated_user = True
+#     form_class = LoginUserForm
+
+#     def get_success_url(self):
+#         return reverse_lazy('profile')
 
 
 class LogoutUserView(LogoutView):
     next_page = 'index'
 
 
-def register_user(request, hashed_pk=None):
-    if request.user and request.user.is_authenticated:
-        return redirect(reverse_lazy('profile'))
-
-    if hashed_pk and is_hash_correct(hashed_pk):
+def invite_user(request, hashed_pk=None):
+    if is_hash_correct(hashed_pk):
         _, pk = hashed_pk.split('_')
         game = Game.objects.filter(pk=pk).first()
+
+        request.session['game_pk'] = pk
     else:
         game = None
+
+    return render(
+        request, 'games/invite_user.html', {'game': game, 'user': request.user}
+    )
+
+
+@login_required(login_url='login')
+def enter_game(request):
+    santa = request.user.santa
+    game = Game.objects.get(pk=request.session['game_pk'])
+    santa.games.add(game)
+
+    return redirect(reverse_lazy('profile'))
+
+
+def register_user(request, is_invited=0):
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse_lazy('profile'))
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -81,12 +126,18 @@ def register_user(request, hashed_pk=None):
                 password=form.cleaned_data['password1'],
             )
             login(request, new_user)
+
+            if is_invited:
+                santa = request.user.santa
+                game = Game.objects.get(pk=request.session['game_pk'])
+                santa.games.add(game)
+
             return redirect(reverse_lazy('profile'))
 
         return render(
             request,
             'games/register_user.html',
-            {'form': form, 'game': game},
+            {'form': form, 'is_invited': is_invited},
         )
 
     form = RegistrationForm()
@@ -94,7 +145,7 @@ def register_user(request, hashed_pk=None):
     return render(
         request,
         'games/register_user.html',
-        {'form': form, 'game': game},
+        {'form': form, 'is_invited': is_invited},
     )
 
 
@@ -134,7 +185,7 @@ def create_game(request):
             new_game = form.save()
 
             invite_url = request.build_absolute_uri(
-                reverse('register', args=[hash_value(new_game.pk)])
+                reverse('invite_user', args=[hash_value(new_game.pk)])
             )
             new_game.url = create_bitlink(invite_url)
             new_game.save()
@@ -154,7 +205,6 @@ def create_game(request):
 
 @login_required(login_url='login')
 def show_game(request, pk):
-    user = request.user
     game = Game.objects.filter(pk=pk).first()
 
     if not game:

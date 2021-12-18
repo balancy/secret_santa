@@ -5,13 +5,20 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login', views.LoginUserView.as_view(), name='login'),
-    path('logout', views.LogoutUserView.as_view(), name='logout'),
+    # path('login/', views.LoginUserView.as_view(), name='login'),
+    # path(
+    #     'login/<int:is_invited>', views.LoginUserView.as_view(), name='login'
+    # ),
+    path('login/', views.login_user, name='login'),
+    path('login/<int:is_invited>/', views.login_user, name='login'),
+    path('logout/', views.LogoutUserView.as_view(), name='logout'),
     path('register/', views.register_user, name='register'),
-    path('register/<str:hashed_pk>/', views.register_user, name='register'),
-    path('profile', views.view_profile, name='profile'),
-    path('santacard', views.update_santa_card, name='santacard'),
-    path('create_game', views.create_game, name='create_game'),
+    path('register/<int:is_invited>/', views.register_user, name='register'),
+    path('invite/<str:hashed_pk>/', views.invite_user, name='invite_user'),
+    path('profile/', views.view_profile, name='profile'),
+    path('santacard/', views.update_santa_card, name='santacard'),
+    path('create_game/', views.create_game, name='create_game'),
+    path('enter_game/', views.enter_game, name='enter_game'),
     path('show_game/<int:pk>/', views.show_game, name='show_game'),
     path('update_game/<int:pk>/', views.update_game, name='update_game'),
     path('update_user', views.update_user, name='update_user'),

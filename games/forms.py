@@ -63,7 +63,8 @@ class RegistrationForm(UserCreationForm, FormPrettifyFieldsMixin):
 
 
 class LoginUserForm(AuthenticationForm, FormPrettifyFieldsMixin):
-    pass
+    class Meta:
+        fields = ('username', 'password')
 
 
 class CreateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
