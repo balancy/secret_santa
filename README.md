@@ -44,3 +44,43 @@ If your smtp server use SSL set use_ssl to True or False if not.
 ```
 python manage.py runserver
 ```
+
+## Production
+
+Docker, docker-compose should already be installed.
+
+1. Clone the repository
+
+```
+git clone git@github.com:balancy/secret_santa.git
+```
+
+2. Create .env.prod file
+
+<!---TODO-->
+
+3. Build images
+
+```
+sudo docker-compose build
+```
+
+4. Run containers
+
+```
+sudo docker-compose up -d
+```
+
+5. Create superuser
+
+```
+sudo docker exec -it secret_santa_django_1 python manage.py createsuperuser
+```
+
+6. Create santa card for superuser
+
+```
+sudo docker exec -it secret_santa_django_1 python manage.py create_santas_for_users
+```
+
+7. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static
