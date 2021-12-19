@@ -154,3 +154,15 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
         widgets = {
             'game': forms.HiddenInput(),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        giver = cleaned_data.get('giver')
+        receiver = cleaned_data.get('receiver')
+
+        if giver == receiver:
+            raise forms.ValidationError(
+                _('Даритель и получатель не должны совпадать!')
+            )
+
+        return cleaned_data
