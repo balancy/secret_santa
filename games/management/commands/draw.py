@@ -42,7 +42,9 @@ def make_and_send_email_message(game, from_adress):
 
 def get_pair_exclusion(game):
     exclusions = Exclusion.objects.filter(game=game)
-    return [(exclusion.giver, exclusion.receiver) for exclusion in exclusions]
+    return [
+        (exclusion.giver, exclusion.receiver) for exclusion in exclusions
+    ]
 
 
 def make_rotation(pairs, exclusions):
