@@ -30,15 +30,14 @@ Change **full_path_to_your_manage_py_script** to the full path to your manage.py
 
 4. Create .env file in project folder and add your SMTP server's settings:
 ```
-smtp_host="smtp.youdomain.com"
-smtp_port="25"
-mail_server_login="login"
-mail_server_password="password"
-from_adress="you@youdomain.com"
-use_tls=True
-BITLY_TOKEN=
+EMAIL_HOST="smtp.youdomain.com"
+EMAIL_PORT="25"
+EMAIL_HOST_USER="login"
+EMAIL_HOST_PASSWORD="password"
+FROM_ADDRESS="you@youdomain.com"
+EMAIL_USE_TLS=True
 ```
-If your smtp server use SSL set use_ssl to True or False if not.
+If your smtp server use TLS set EMAIL_USE_TLS to True or False if not.
 
 ## Launch the app
 

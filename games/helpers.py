@@ -7,7 +7,7 @@ from .models import Santa
 from secret_santa.settings import BITLY_TOKEN, HASH_KEY
 
 
-def create_santa_for_user(user, wishlist, letter):
+def create_santa_for_user(user, wishlist='', letter=''):
     Santa.objects.create(user=user, wishlist=wishlist, letter_to_santa=letter)
 
 

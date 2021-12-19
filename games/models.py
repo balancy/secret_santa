@@ -22,7 +22,7 @@ class Game(models.Model):
 
     coordinator = models.ForeignKey(
         CustomUser,
-        related_name='games_coordinators',
+        related_name='games',
         verbose_name='организатор',
         on_delete=models.PROTECT,
     )

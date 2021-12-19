@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from games.models import CustomUser, Game, Santa
+from games.models import CustomUser, Game, Santa, Exclusion
 
 
 class FormPrettifyFieldsMixin(forms.Form):
@@ -142,6 +142,33 @@ class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
         if gift_date <= draw_date:
             raise forms.ValidationError(
                 _('Дата отправки подарка должна быть позже даты жеребьевки')
+            )
+
+        return cleaned_data
+
+
+class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    class Meta:
+        model = Exclusion
+        fields = ('game', 'giver', 'receiver')
+        widgets = {
+            'game': forms.HiddenInput(),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        game = cleaned_data.get('game')
+        giver = cleaned_data.get('giver')
+        receiver = cleaned_data.get('receiver')
+
+        if Exclusion.objects.filter(game=game, giver=giver, receiver=receiver):
+            raise forms.ValidationError(
+                _('Такая пара-исключение уже есть в этой игре!')
+            )
+
+        if giver == receiver:
+            raise forms.ValidationError(
+                _('Даритель и получатель не должны совпадать!')
             )
 
         return cleaned_data

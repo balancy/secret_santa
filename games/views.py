@@ -14,6 +14,7 @@ from .forms import (
     SantaCardForm,
     UpdateGameForm,
     UpdateUserForm,
+    ExclusionsForm,
 )
 from .helpers import (
     create_bitlink,
@@ -34,9 +35,10 @@ def index(request):
 @login_required(login_url='login')
 def view_profile(request):
     user = request.user
-    santa = Santa.objects.get(user=user)
+    santa = user.santa
     santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
-    coordinator_games = Game.objects.filter(coordinator=user)
+    coordinator_games = user.games.all()
+
     context = {
         'user': user,
         'santa_games': santa_games,
@@ -60,6 +62,9 @@ def login_user(request):
             new_user = authenticate(username=username, password=password)
             login(request, new_user)
 
+            if not Santa.objects.filter(user=new_user).first():
+                create_santa_for_user(new_user)
+
             if game_pk := request.session.get('game_pk'):
                 santa = new_user.santa
                 game = Game.objects.get(pk=game_pk)
@@ -67,7 +72,6 @@ def login_user(request):
 
             return redirect(reverse_lazy('profile'))
 
-        print('not valid')
         return render(request, 'games/login.html', context={'form': form})
 
     form = LoginUserForm()
@@ -247,6 +251,40 @@ def update_game(request, pk):
             'santas': santas,
             'game': game,
             'exclusions': exclusions,
+        },
+    )
+
+
+@login_required(login_url='login')
+def exclusions(request, pk):
+    game = Game.objects.filter(pk=pk).first()
+    santas = Santa.objects.filter(games=game)
+
+    if not game:
+        return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
+    if request.method == 'POST':
+        form = ExclusionsForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
+        return render(
+            request,
+            'games/exclusions.html',
+            {'form': form, 'santas': santas},
+        )
+
+    form = ExclusionsForm(initial={'game': game})
+
+    return render(
+        request,
+        'games/exclusions.html',
+        {
+            'form': form,
+            'santas': santas,
         },
     )
 
