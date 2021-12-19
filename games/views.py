@@ -26,12 +26,9 @@ from .models import Santa, Game, Exclusion
 
 
 def index(request):
-    random_santas_wishes = []
-    santas_wishes = [santa for santa in Santa.objects.all()]
-    if len(santas_wishes) >= 3:
-        random.shuffle(santas_wishes)
-        random_santas_wishes = santas_wishes[:3]
-    context = {'random_santas_wishes': random_santas_wishes}
+    santas = [santa for santa in Santa.objects.all()]
+    random.shuffle(santas)
+    context = {'santas': santas[:3]}
     return render(request, 'games/index.html', context=context)
 
 
