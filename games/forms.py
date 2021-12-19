@@ -132,7 +132,6 @@ class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
         cleaned_data = super().clean()
         draw_date = cleaned_data.get('draw_date')
         gift_date = cleaned_data.get('gift_date')
-        game = cleaned_data.get('game')
 
         if draw_date and gift_date:
             if draw_date <= date.today():
