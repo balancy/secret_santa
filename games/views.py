@@ -38,9 +38,10 @@ def index(request):
 @login_required(login_url='login')
 def view_profile(request):
     user = request.user
-    santa = Santa.objects.get(user=user)
+    santa = user.santa
     santa_games = santa.games.filter(draw_date__gte=datetime.date.today())
-    coordinator_games = Game.objects.filter(coordinator=user)
+    coordinator_games = user.games.all()
+
     context = {
         'user': user,
         'santa_games': santa_games,
