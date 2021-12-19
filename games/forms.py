@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from games.models import CustomUser, Game, Santa
+from games.models import CustomUser, Game, Santa, Exclusion
 
 
 class FormPrettifyFieldsMixin(forms.Form):
@@ -145,3 +145,9 @@ class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
             )
 
         return cleaned_data
+
+
+class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
+    class Meta:
+        model = Exclusion
+        fields = ('game', 'giver', 'receiver')

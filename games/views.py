@@ -14,6 +14,7 @@ from .forms import (
     SantaCardForm,
     UpdateGameForm,
     UpdateUserForm,
+    ExclusionsForm,
 )
 from .helpers import (
     create_bitlink,
@@ -250,6 +251,39 @@ def update_game(request, pk):
             'santas': santas,
             'game': game,
             'exclusions': exclusions,
+        },
+    )
+
+
+@login_required(login_url='login')
+def exclusions(request, pk):
+    game = Game.objects.filter(pk=pk).first()
+    santas = Santa.objects.filter(games=game)
+
+    if not game:
+        return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
+    if request.method == 'POST':
+        form = ExclusionsForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
+        return render(
+            request,
+            'games/exclusions.html',
+            {'form': form, 'santas': santas},
+        )
+
+    form = ExclusionsForm()
+
+    return render(
+        request,
+        'games/exclusions.html',
+        {
+            'form': form,
+            'santas': santas,
         },
     )
 

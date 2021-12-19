@@ -15,6 +15,7 @@ urlpatterns = [
     path('enter_game/', views.enter_game, name='enter_game'),
     path('show_game/<int:pk>/', views.show_game, name='show_game'),
     path('update_game/<int:pk>/', views.update_game, name='update_game'),
+    path('exclusions/<int:pk>/', views.exclusions, name='exclusions'),
     path('update_user', views.update_user, name='update_user'),
     path(
         'remove_santa_from_game/<int:game_pk>/<int:santa_pk>/',
