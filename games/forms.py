@@ -132,6 +132,7 @@ class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
         cleaned_data = super().clean()
         draw_date = cleaned_data.get('draw_date')
         gift_date = cleaned_data.get('gift_date')
+        game = cleaned_data.get('game')
 
         if draw_date and gift_date:
             if draw_date <= date.today():
@@ -161,6 +162,9 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
         giver = cleaned_data.get('giver')
         receiver = cleaned_data.get('receiver')
 
+        exclusion_pair_count = Exclusion.objects.filter(game=game).count()
+        santas_game_count = Santa.objects.filter(games=game).count()
+
         if Exclusion.objects.filter(game=game, giver=giver, receiver=receiver):
             raise forms.ValidationError(
                 _('Такая пара-исключение уже есть в этой игре!')
@@ -169,6 +173,11 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
         if giver == receiver:
             raise forms.ValidationError(
                 _('Даритель и получатель не должны совпадать!')
+            )
+
+        if (santas_game_count - exclusion_pair_count) <= 2:
+            raise forms.ValidationError(
+                _('Максимальное количество пар-исключений задано!')
             )
 
         return cleaned_data
