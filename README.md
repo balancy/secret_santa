@@ -36,8 +36,9 @@ EMAIL_HOST_USER=login
 EMAIL_HOST_PASSWORD=password
 FROM_ADDRESS=you@youdomain.com
 EMAIL_USE_TLS=True
-BITLY_TOKEN=123344 [see bitly docs](https://bitly.com/a/sign_in?rd=/settings/api/)
+BITLY_TOKEN=123344 
 ```
+[see bitly docs](https://bitly.com/a/sign_in?rd=/settings/api/)
 If your smtp server use TLS set EMAIL_USE_TLS to True or False if not.
 
 ## Launch the app
