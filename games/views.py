@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -24,7 +25,13 @@ from .models import Santa, Game, Exclusion
 
 
 def index(request):
-    return render(request, 'games/index.html')
+    random_santas_wishes = []
+    santas_wishes = [santa for santa in Santa.objects.all()]
+    if len(santas_wishes) >= 3:
+        random.shuffle(santas_wishes)
+        random_santas_wishes = santas_wishes[:3]
+    context = {'random_santas_wishes': random_santas_wishes}
+    return render(request, 'games/index.html', context=context)
 
 
 @login_required(login_url='login')

@@ -52,7 +52,6 @@
             </div>
         </div>
       </div>
-
       <div class="row my-5">
         <div class="col col-6 pr-4">
             <div class="card border-dark">
@@ -65,7 +64,20 @@
             </div>
         </div>
         <div class="col col-6 pl-4">
-
+        </div>
+      </div>
+      <div class="site-section bg-light">
+        <div class="container">
+          <div class="row">
+            {% for santa_wish in random_santas_wishes %}
+              <div class="col-sm-4">
+                <blockquote class="testimony">
+                  <p>&ldquo;{{ santa_wish.wishlist }}&rdquo;</p>
+                  <p class="small text-primary">&mdash; {{ santa_wish.user }}</p>
+                </blockquote>
+              </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
