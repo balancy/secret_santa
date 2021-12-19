@@ -64,6 +64,9 @@ def login_user(request):
             new_user = authenticate(username=username, password=password)
             login(request, new_user)
 
+            if not Santa.objects.filter(user=new_user).first():
+                create_santa_for_user(new_user)
+
             if game_pk := request.session.get('game_pk'):
                 santa = new_user.santa
                 game = Game.objects.get(pk=game_pk)
@@ -71,7 +74,6 @@ def login_user(request):
 
             return redirect(reverse_lazy('profile'))
 
-        print('not valid')
         return render(request, 'games/login.html', context={'form': form})
 
     form = LoginUserForm()
