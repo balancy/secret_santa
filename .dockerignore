@@ -1,10 +1,8 @@
-Dockerfile
-.venv
+.*
 __pycache__
+Dockerfile
 docker-compose.yml
+docker-compose.yaml
 *.sqlite3
-.env*
-.env
 media
-staticfiles
 README.md

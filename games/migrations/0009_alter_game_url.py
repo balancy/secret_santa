@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='game',
             name='url',
-            field=models.URLField(blank=True, null=True, verbose_name='урл'),
+            field=models.URLField(blank=True, null=True, verbose_name='ссылка на игру'),
         ),
     ]

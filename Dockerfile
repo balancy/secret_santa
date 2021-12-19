@@ -13,6 +13,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD python manage.py collectstatic --no-input
+RUN python manage.py collectstatic --no-input
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
