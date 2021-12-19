@@ -149,8 +149,8 @@ BITLY_TOKEN = os.getenv('BITLY_TOKEN')
 HASH_KEY = os.getenv('HASH_KEY', 'random_key')
 
 # SMTP settings
-EMAIL_HOST = os.getenv('smtp_host')
-EMAIL_PORT = os.getenv('smtp_port')
-EMAIL_HOST_USER = os.getenv('mail_server_login')
-EMAIL_HOST_PASSWORD = os.getenv('mail_server_password')
-EMAIL_USE_TLS = os.getenv('use_tls', True)
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', True)

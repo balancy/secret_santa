@@ -108,11 +108,11 @@ def make_draw(game):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        from_adress = os.getenv('from_adress')
+        FROM_ADDRESS = os.getenv('FROM_ADDRESS')
 
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
         games = Game.objects.filter(draw_date=current_date)
         for game in games:
             make_draw(game)
-            make_and_send_email_message(game, from_adress)
+            make_and_send_email_message(game, FROM_ADDRESS)
