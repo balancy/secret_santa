@@ -4,3 +4,4 @@ __pycache__
 .env.prod
 *.sqlite3
 venv/
+staticfiles/

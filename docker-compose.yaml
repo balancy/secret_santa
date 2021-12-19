@@ -14,15 +14,14 @@ services:
   django:
     restart: always
     volumes:
-      - static_volume:/app/staticfiles
+      - ./:/app:cached
+    build: ./
     env_file:
       - ./.env.prod
-    build: ./
     ports:
-      - "8080:8080"
+      - "8090:8080"
     depends_on:
       - db
 
 volumes:
   postgres_data: null
-  static_volume: null
