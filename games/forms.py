@@ -157,8 +157,14 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
 
     def clean(self):
         cleaned_data = super().clean()
+        game = cleaned_data.get('game')
         giver = cleaned_data.get('giver')
         receiver = cleaned_data.get('receiver')
+
+        if Exclusion.objects.filter(game=game, giver=giver, receiver=receiver):
+            raise forms.ValidationError(
+                _('Такая пара-исключение уже есть в этой игре!')
+            )
 
         if giver == receiver:
             raise forms.ValidationError(
