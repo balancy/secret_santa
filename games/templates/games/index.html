@@ -66,19 +66,29 @@
         <div class="col col-6 pl-4">
         </div>
       </div>
-      <div class="site-section bg-light">
-        <div class="container">
-          <div class="row">
-            {% for santa_wish in random_santas_wishes %}
-              <div class="col-sm-4">
-                <blockquote class="testimony">
-                  <p>&ldquo;{{ santa_wish.wishlist }}&rdquo;</p>
-                  <p class="small text-primary">&mdash; {{ santa_wish.user }}</p>
-                </blockquote>
+
+      <hr>
+      <h3><span class="badge bg-dark text-light">Идеи для списков желаний</span></h3>
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          {% for santa in santas %}
+            {% if forloop.first %}
+              <div class="carousel-item active">
+            {% else %}
+              <div class="carousel-item">
+            {% endif %}
+              <div class="card border-dark">
+                <div class="card-header">{{ santa.user }}</div>
+                <div class="card-body">
+                  <blockquote class="testimony">
+                  <p>&ldquo;{{ santa.wishlist }}&rdquo;</p>
+                  </blockquote>
+                </div>
+              </div>
               </div>
             {% endfor %}
           </div>
-        </div>
       </div>
+
     </div>
 {% endblock %}

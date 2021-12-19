@@ -36,6 +36,7 @@ mail_server_login="login"
 mail_server_password="password"
 from_adress="you@youdomain.com"
 use_tls=True
+BITLY_TOKEN=
 ```
 If your smtp server use SSL set use_ssl to True or False if not.
 
