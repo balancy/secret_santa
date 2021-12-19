@@ -151,3 +151,6 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
     class Meta:
         model = Exclusion
         fields = ('game', 'giver', 'receiver')
+        widgets = {
+            'game': forms.HiddenInput(),
+        }

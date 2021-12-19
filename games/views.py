@@ -268,6 +268,7 @@ def exclusions(request, pk):
 
         if form.is_valid():
             form.save()
+
             return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
 
         return render(
@@ -276,7 +277,7 @@ def exclusions(request, pk):
             {'form': form, 'santas': santas},
         )
 
-    form = ExclusionsForm()
+    form = ExclusionsForm(initial={'game': game})
 
     return render(
         request,
