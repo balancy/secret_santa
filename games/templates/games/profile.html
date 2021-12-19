@@ -28,9 +28,9 @@
             <div class="card-header">Карточка санты</div>
             <div class="card-body">
               Список желаний:
-              <div style="border: 1px solid;" class="p-2 my-1">{{ santa.wishlist | linebreaks }}</div>
+              <div style="border: 1px solid; min-height: 80px;" class="p-2 my-1">{% if santa.wishlist %}{{ santa.wishlist | linebreaks }}{% endif %}</div>
               Письмо Санте:
-              <div style="border: 1px solid;" class="p-2 my-1">{{ santa.letter_to_santa | linebreaks}}</div>
+              <div style="border: 1px solid; min-height: 80px;" class="p-2 my-1">{% if santa.letter_to_santa %}{{ santa.letter_to_santa | linebreaks}}{% endif %}</div>
               <a class="btn btn-dark mt-3 float-right" href="{% url 'santacard' %}" role="button">Редактировать</a>
             </div>
           </div>
