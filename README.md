@@ -45,7 +45,7 @@ pip install -r requirements.txt
 4. Copy `.env.example` to `.env` and define your environment variables
 
 ```
-cp .env.prod.example .env.prod
+cp .env.example .env
 ```
 
 - `BITLY_TOKEN` - your [bitly](https://app.bitly.com/settings/api/) token
@@ -130,7 +130,7 @@ cp .env.prod.example .env.prod
 sudo docker exec -it secret_santa_django_1 python manage.py createsuperuser
 ```
 
-6. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static
+6. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) to serve static
 
 7. Add current user to crontab group and Add the cron job to your crontab
 
