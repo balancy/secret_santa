@@ -10,6 +10,6 @@ sudo docker-compose build
 sudo docker-compose up -d
 
 echo "Removing unused images and containers"
-docker system prune -f
+sudo docker system prune -f
 
 echo "Project deployed successfully"
