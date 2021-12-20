@@ -2,6 +2,7 @@ import datetime
 import os
 
 from collections import deque
+from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from textwrap import dedent
@@ -9,17 +10,17 @@ from textwrap import dedent
 from games.models import Game, Santa, Draw, Exclusion
 
 
-def send_email(subject, to_addr, from_addr, body_text):
+def send_email(subject, to_addr, body_text):
     send_mail(
         subject,
         body_text,
-        from_addr,
+        settings.DEFAULT_FROM_EMAIL,
         [to_addr],
         fail_silently=False,
     )
 
 
-def make_and_send_email_message(game, from_adress):
+def make_and_send_email_message(game):
     draws = Draw.objects.filter(game=game)
 
     for draw in draws:
@@ -33,7 +34,7 @@ def make_and_send_email_message(game, from_adress):
             Вишлист: {draw.receiver.wishlist}"""
         )
 
-        send_email(subject, draw.giver.user.email, from_adress, body_text)
+        send_email(subject, draw.giver.user.email, body_text)
 
 
 def get_pair_exclusion(game):
@@ -106,11 +107,9 @@ def make_draw(game):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        FROM_ADDRESS = os.getenv('FROM_ADDRESS')
-
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
         games = Game.objects.filter(draw_date=current_date)
         for game in games:
             make_draw(game)
-            make_and_send_email_message(game, FROM_ADDRESS)
+            make_and_send_email_message(game)
