@@ -274,7 +274,7 @@ def exclusions(request, pk):
         return render(
             request,
             'games/exclusions.html',
-            {'form': form, 'santas': santas},
+            {'form': form, 'santas': santas, 'game': game},
         )
 
     form = ExclusionsForm(initial={'game': game})
@@ -285,6 +285,7 @@ def exclusions(request, pk):
         {
             'form': form,
             'santas': santas,
+            'game': game,
         },
     )
 

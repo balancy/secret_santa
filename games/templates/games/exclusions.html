@@ -27,6 +27,12 @@
             {{ field }}
           {% endif %}
         {% endfor %}
+        <div class="row">
+          <div class="col">
+            <a class="btn btn-outline-dark my-3" href="{% url 'update_game' game.pk%}" type="button">
+              Вернуться в редактирование игры
+            </a>
+          </div>
         <div class="col">
           <button class="btn btn-dark my-3 float-right" type="submit">
             Сохранить
