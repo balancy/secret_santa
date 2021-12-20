@@ -4,6 +4,7 @@ import os
 from collections import deque
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
+from textwrap import dedent
 
 from games.models import Game, Santa, Draw, Exclusion
 
@@ -23,13 +24,13 @@ def make_and_send_email_message(game, from_adress):
 
     for draw in draws:
         subject = f'Жеребьевка в игре {game.name} проведена!'
-        body_text = (
-            f'Жеребьевка в игре {game.name} проведена!\r\n' +
-            'Спешу сообщить кто тебе выпал.\r\n' +
-            f'Ваш игрок: {draw.receiver.user.username}\r\n' +
-            f'Адрес эл. почты: {draw.receiver.user.email}\r\n' +
-            f'Письмо Санте: {draw.receiver.letter_to_santa}\r\n' +
-            f'Вишлист: {draw.receiver.wishlist}\r\n'
+        body_text = dedent(
+            f"""Жеребьевка в игре {game.name} проведена!
+            Спешу сообщить кто тебе выпал.
+            Ваш игрок: {draw.receiver.user.username}
+            Адрес эл. почты: {draw.receiver.user.email}
+            Письмо Санте: {draw.receiver.letter_to_santa}
+            Вишлист: {draw.receiver.wishlist}"""
         )
 
         send_email(
