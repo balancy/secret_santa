@@ -128,23 +128,28 @@ class UpdateGameForm(forms.ModelForm, FormPrettifyFieldsMixin):
             ),
         }
 
-    def clean(self):
-        cleaned_data = super().clean()
-        draw_date = cleaned_data.get('draw_date')
-        gift_date = cleaned_data.get('gift_date')
+    def clean_draw_date(self):
+        draw_date = self.cleaned_data['draw_date']
 
-        if draw_date and gift_date:
-            if draw_date <= date.today():
-                raise forms.ValidationError(
-                    _('Дата жеребьевки должна быть позже сегодняшнего дня')
-                )
-
-        if gift_date <= draw_date:
+        if draw_date < date.today():
             raise forms.ValidationError(
-                _('Дата отправки подарка должна быть позже даты жеребьевки')
+                _('Дата жеребьевки должна быть не раньше сегодняшнего дня')
             )
 
-        return cleaned_data
+        return draw_date
+
+    def clean_gift_date(self):
+        gift_date = self.cleaned_data['gift_date']
+
+        if gift_date < date.today():
+            raise forms.ValidationError(
+                _(
+                    'Дата отправки подарка должна быть не раньше сегодняшнего '
+                    'дня'
+                )
+            )
+
+        return gift_date
 
 
 class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
