@@ -50,28 +50,42 @@ python manage.py runserver
 
 ## Production
 
-Docker, docker-compose should already be installed.
+At least Python3.8, Git, Docker and docker-compose should already be installed.
 
 1. Clone the repository
 
 ```
-git clone git@github.com:balancy/secret_santa.git
+git clone https://github.com/balancy/secret_santa.git
 ```
 
-2. Create .env.prod file
-
-<!---TODO-->
-
-3. Build images
+2. Go inside cloned repo
 
 ```
-sudo docker-compose build
+cd secret_santa
 ```
 
-4. Run containers
+3. Copy .env.prod.example file to .env.prod and define your environment variables
 
 ```
-sudo docker-compose up -d
+cp .env.prod.example .env.prod
+```
+
+- `SECRET_KEY` - django project secret key
+- `ALLOWED_HOSTS` - see [documentation](https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts) for details
+- `BITLY_TOKEN` - your [bitly](https://app.bitly.com/settings/api/) token
+- `HASH_KEY` - some random string used for hashing game ids
+- `POSTGRES_DB` - your db name
+- `POSTGRES_PASSWORD` - your db password
+- `POSTGRES_USER` - your db username
+- `EMAIL_HOST`
+- `EMAIL_PORT`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD` - see [documentation](https://docs.djangoproject.com/en/4.0/topics/email/) for the last 4
+
+4. Run deployment script
+
+```
+./deployment_script.sh
 ```
 
 5. Create superuser
@@ -81,3 +95,5 @@ sudo docker exec -it secret_santa_django_1 python manage.py createsuperuser
 ```
 
 6. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static
+
+7. Your app will be available on `90` port
