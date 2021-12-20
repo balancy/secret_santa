@@ -273,12 +273,11 @@ def exclusions(request, pk):
             return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
 
         return render(
-            request,
-            'games/exclusions.html',
             {'form': form, 'santas': santas, 'game': game},
         )
 
     form = ExclusionsForm()
+    form = ExclusionsForm(initial={'game': game})
 
     return render(
         request,
@@ -289,6 +288,7 @@ def exclusions(request, pk):
             'game': game,
         },
     )
+
 
 
 @login_required(login_url='login')
