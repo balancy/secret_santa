@@ -42,13 +42,6 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-BITLY_TOKEN=some_bitly_token
-DEFAULT_FROM_EMAIL=some_email_address
-EMAIL_HOST=smtp.some_server.com
-EMAIL_HOST_PASSWORD=some_email_password
-EMAIL_HOST_USER=some_email_user
-EMAIL_PORT=587
-
 4. Copy `.env.example` to `.env` and define your environment variables
 
 ```
