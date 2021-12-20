@@ -265,11 +265,15 @@ def update_game(request, pk):
 
 @login_required(login_url='login')
 def exclusions(request, pk):
+    user = request.user
     game = Game.objects.filter(pk=pk).first()
     santas = Santa.objects.filter(games=game)
 
     if not game:
         return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
 
     if request.method == 'POST':
         form = ExclusionsForm(request.POST)
