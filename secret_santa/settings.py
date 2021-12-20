@@ -146,7 +146,7 @@ BITLY_TOKEN = os.getenv('BITLY_TOKEN')
 
 # Hash key
 
-HASH_KEY = os.getenv('HASH_KEY', 'random_key')
+HASH_KEY = os.getenv('HASH_KEY', get_random_secret_key())
 
 # SMTP settings
 EMAIL_HOST = os.getenv('EMAIL_HOST')

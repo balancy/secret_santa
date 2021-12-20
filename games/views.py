@@ -265,13 +265,20 @@ def update_game(request, pk):
 
 @login_required(login_url='login')
 def exclusions(request, pk):
+    user = request.user
     game = Game.objects.filter(pk=pk).first()
 
     if not game:
         return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
 
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
+
+    if game.santas.count() - game.exclusions.count() <= 2:
+        return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
+
     if request.method == 'POST':
-        form = ExclusionsForm(request.POST)
+        form = ExclusionsForm(request.POST, initial={'game': game})
 
         if form.is_valid():
             form.save()
@@ -281,10 +288,7 @@ def exclusions(request, pk):
         return render(
             request,
             'games/exclusions.html',
-            {
-                'form': form,
-                'game': game
-            },
+            {'form': form, 'game': game},
         )
 
     form = ExclusionsForm(initial={'game': game})
@@ -292,10 +296,7 @@ def exclusions(request, pk):
     return render(
         request,
         'games/exclusions.html',
-        {
-            'form': form,
-            'game': game,
-        },
+        {'form': form, 'game': game},
     )
 
 

@@ -36,7 +36,7 @@ EMAIL_HOST_USER=login
 EMAIL_HOST_PASSWORD=password
 FROM_ADDRESS=you@youdomain.com
 EMAIL_USE_TLS=True
-BITLY_TOKEN=123344 
+BITLY_TOKEN=123344
 ```
 How to get token [see bitly docs](https://bitly.com/a/sign_in?rd=/settings/api/)
 
@@ -80,10 +80,4 @@ sudo docker-compose up -d
 sudo docker exec -it secret_santa_django_1 python manage.py createsuperuser
 ```
 
-6. Create santa card for superuser
-
-```
-sudo docker exec -it secret_santa_django_1 python manage.py create_santas_for_users
-```
-
-7. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static
+6. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static

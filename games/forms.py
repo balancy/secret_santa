@@ -155,28 +155,23 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
             'game': forms.HiddenInput(),
         }
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         initial = kwargs.get('initial')
 
         if initial:
-            self.fields['giver'].queryset = (
-                Santa.objects.filter(games=initial['game'])
+            self.fields['giver'].queryset = Santa.objects.filter(
+                games=initial['game']
             )
-            self.fields['receiver'].queryset = (
-                Santa.objects.filter(games=initial['game'])
+            self.fields['receiver'].queryset = Santa.objects.filter(
+                games=initial['game']
             )
-
 
     def clean(self):
         cleaned_data = super().clean()
         game = cleaned_data.get('game')
         giver = cleaned_data.get('giver')
         receiver = cleaned_data.get('receiver')
-
-        exclusion_pair_count = Exclusion.objects.filter(game=game).count()
-        santas_game_count = Santa.objects.filter(games=game).count()
 
         if Exclusion.objects.filter(game=game, giver=giver, receiver=receiver):
             raise forms.ValidationError(
@@ -186,11 +181,6 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
         if giver == receiver:
             raise forms.ValidationError(
                 _('Даритель и получатель не должны совпадать!')
-            )
-
-        if (santas_game_count - exclusion_pair_count) <= 2:
-            raise forms.ValidationError(
-                _('Максимальное количество пар-исключений задано!')
             )
 
         return cleaned_data
