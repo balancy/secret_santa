@@ -96,7 +96,7 @@
           <div class="col">Эл. почта</div>
           <div class="col">Имя</div>
           <div class="col">Фамилия</div>
-          <div class="col"></div>
+          <div class="col">Удалить</div>
         </div>
         {% for santa in santas %}
           <div class="row py-3" style="border-bottom: 1px solid;">
@@ -118,20 +118,25 @@
     <div class="card-header">Пары-исключения</div>
 
     <div class="card-body">
-      {% for exclusion in exclusions %}
-        <div class="row">
-          <div class="col-3">
-            {{ forloop.counter }}. {{ exclusion.giver.user.username }}
-          </div>
-          <div class="col-3">
-            {{ exclusion.receiver.user.username }}
-          </div>
-          <div class="col-3">
-            <a href="{% url 'remove_exclusion_from_game' game.pk exclusion.pk %}" type="button" class="text-danger">удалить</a>
-          </div>
+      {% if exclusions %}
+        <div class="row py-3" style="border-bottom: 1px solid;">
+          <div class="col">Даритель</div>
+          <div class="col">Получатель</div>
+          <div class="col">Удалить</div>
         </div>
-      {% endfor %}
-      <div class="row">
+        {% for exclusion in exclusions %}
+          <div class="row py-3" style="border-bottom: 1px solid;">
+            <div class="col">{{ exclusion.giver.user.username }}</div>
+            <div class="col">{{ exclusion.receiver.user.username }}</div>
+            <div class="col">
+              <a href="{% url 'remove_exclusion_from_game' game.pk exclusion.pk %}" type="button" class="text-danger">удалить</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        Пока нет пар-исключений
+      {% endif %}
+      <div class="row mt-3">
         <div class="col">
           <a class="btn btn-outline-dark my-3" href="{% url 'exclusions' game.pk %}" type="button">
             Добавить пару-исключение

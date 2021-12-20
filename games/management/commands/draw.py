@@ -24,44 +24,41 @@ def make_and_send_email_message(game, from_adress):
     for draw in draws:
         subject = f'Жеребьевка в игре {game.name} проведена!'
         body_text = (
-            f'Жеребьевка в игре {game.name} проведена!\r\n' +
-            'Спешу сообщить кто тебе выпал.\r\n' +
-            f'Ваш игрок: {draw.receiver.user.username}\r\n' +
-            f'Адрес эл. почты: {draw.receiver.user.email}\r\n' +
-            f'Письмо Санте: {draw.receiver.letter_to_santa}\r\n' +
+            f'Жеребьевка в игре {game.name} проведена!\r\n'
+            'Спешу сообщить кто тебе выпал.\r\n'
+            f'Ваш игрок: {draw.receiver.user.username}\r\n'
+            f'Адрес эл. почты: {draw.receiver.user.email}\r\n'
+            f'Письмо Санте: {draw.receiver.letter_to_santa}\r\n'
             f'Вишлист: {draw.receiver.wishlist}\r\n'
         )
 
-        send_email(
-            subject,
-            draw.giver.user.email,
-            from_adress,
-            body_text
-        )
+        send_email(subject, draw.giver.user.email, from_adress, body_text)
 
 
 def get_pair_exclusion(game):
     exclusions = Exclusion.objects.filter(game=game)
-    return [
-        (exclusion.giver, exclusion.receiver) for exclusion in exclusions
-    ]
+    return [(exclusion.giver, exclusion.receiver) for exclusion in exclusions]
 
 
 def make_rotation(pairs, exclusions):
     pairs_amount_to_ignore_exclusion = 3
 
     for exclusion in exclusions:
-        if (exclusion in pairs) and (len(pairs) > pairs_amount_to_ignore_exclusion):
+        if (exclusion in pairs) and (
+            len(pairs) > pairs_amount_to_ignore_exclusion
+        ):
             pairs = [list(i) for i in pairs]
             exclusion = list(exclusion)
 
             first_rotation_index = pairs.index(exclusion)
             second_rotation_index = next(
-                i for i, (_, required_element) in enumerate(pairs)
+                i
+                for i, (_, required_element) in enumerate(pairs)
                 if required_element == exclusion[0]
             )
             third_rotation_index = next(
-                i for i, (_, required_element) in enumerate(pairs)
+                i
+                for i, (_, required_element) in enumerate(pairs)
                 if required_element == pairs[second_rotation_index][0]
             )
 
@@ -78,7 +75,7 @@ def make_rotation(pairs, exclusions):
 
 def is_exclusions_in_pairs(pairs, exclusions):
     for exclusion in exclusions:
-        if (exclusion in pairs):
+        if exclusion in pairs:
             return True
     return False
 
@@ -102,9 +99,7 @@ def make_draw(game):
 
     for giver, receiver in modified_pairs:
         draw = Draw.objects.get_or_create(
-            game=game,
-            giver=giver,
-            receiver=receiver
+            game=game, giver=giver, receiver=receiver
         )
 
 
