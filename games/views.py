@@ -7,6 +7,7 @@ from django.contrib.auth.views import LogoutView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 
+from secret_santa.settings import WISHLISTS_MAX_NUMBER
 from .forms import (
     CreateGameForm,
     LoginUserForm,
@@ -28,7 +29,7 @@ from .models import Santa, Game, Exclusion
 def index(request):
     santas = [santa for santa in Santa.objects.all()]
     random.shuffle(santas)
-    context = {'santas': santas[:3]}
+    context = {'santas': santas[:WISHLISTS_MAX_NUMBER]}
     return render(request, 'games/index.html', context=context)
 
 
