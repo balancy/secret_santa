@@ -1,5 +1,16 @@
 # Secret Santa
 
+App represents MVP of Secret Santa site.
+
+It allows users to:
+
+1. Organize and manage "Secret Santa" games
+2. Invite other players
+3. Perform draws manually or automatically on game draw dates
+4. Set player pairs exclusions
+
+![secret santa](https://i.ibb.co/RT6cjzX/readme.jpg)
+
 ## Development mode
 
 ### Install
