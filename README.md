@@ -139,4 +139,14 @@ sudo docker exec -it secret_santa_django_1 python manage.py createsuperuser
 
 6. Create [nginx config](https://sayari3.com/articles/11-how-to-serve-djangos-static-files-using-nginx-on-localhost/) for serving static
 
-7. Your app will be available on `90` port
+7. Add current user to crontab group and Add the cron job to your crontab
+
+```
+sudo usermod -a -G crontab "$USER"
+```
+
+```
+(crontab -l ; echo "59 23 * * * sudo docker exec -t secret_santa_django_1 python manage.py draw") | crontab -
+```
+
+8. Your app will be available on `90` port
