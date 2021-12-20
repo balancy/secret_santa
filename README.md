@@ -70,17 +70,18 @@ cd secret_santa
 cp .env.prod.example .env.prod
 ```
 
-- `SECRET_KEY` - django project secret key
 - `ALLOWED_HOSTS` - see [documentation](https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts) for details
 - `BITLY_TOKEN` - your [bitly](https://app.bitly.com/settings/api/) token
+- `DEFAULT_FROM_EMAIL` - your server email for players to receive messages from
+- `EMAIL_HOST`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `EMAIL_PORT` - see [documentation](https://docs.djangoproject.com/en/4.0/topics/email/) for all `EMAIL` variables
 - `HASH_KEY` - some random string used for hashing game ids
 - `POSTGRES_DB` - your db name
 - `POSTGRES_PASSWORD` - your db password
 - `POSTGRES_USER` - your db username
-- `EMAIL_HOST`
-- `EMAIL_PORT`
-- `EMAIL_HOST_USER`
-- `EMAIL_HOST_PASSWORD` - see [documentation](https://docs.djangoproject.com/en/4.0/topics/email/) for the last 4
+- `SECRET_KEY` - django project secret key
 
 4. Run deployment script
 
