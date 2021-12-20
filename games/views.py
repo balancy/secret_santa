@@ -1,6 +1,5 @@
 import datetime
 import random
-from more_itertools import chunked
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -35,7 +34,9 @@ def index(request):
         )
     ]
     random.shuffle(santas)
-    context = {'santas': list(chunked(santas[:WISHLISTS_MAX_NUMBER], 2))}
+    santas = santas[:WISHLISTS_MAX_NUMBER]
+    santas_pairs = list(zip(santas[::2], santas[1::2]))
+    context = {'santas': santas_pairs}
     return render(request, 'games/index.html', context=context)
 
 
@@ -281,14 +282,9 @@ def exclusions(request, pk):
         return render(
             request,
             'games/exclusions.html',
-            {
-                'form': form,
-                'santas': santas,
-                'game': game
-            },
+            {'form': form, 'santas': santas, 'game': game},
         )
 
-    form = ExclusionsForm()
     form = ExclusionsForm(initial={'game': game})
 
     return render(
@@ -300,7 +296,6 @@ def exclusions(request, pk):
             'game': game,
         },
     )
-
 
 
 @login_required(login_url='login')
