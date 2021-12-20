@@ -305,10 +305,14 @@ def remove_santa_from_game(request, game_pk, santa_pk):
 
 @login_required(login_url='login')
 def remove_exclusion_from_game(request, game_pk, exclusion_pk):
+    user = request.user
+    game = Game.objects.get(pk=game_pk)
+
+    if game.coordinator != user:
+        return redirect(reverse_lazy('profile'))
+
     exclusion = Exclusion.objects.get(pk=exclusion_pk)
     exclusion.delete()
-
-    return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
 
 
 def greeting_page(request):
