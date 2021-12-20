@@ -34,7 +34,7 @@ EMAIL_HOST=smtp.youdomain.com
 EMAIL_PORT=25
 EMAIL_HOST_USER=login
 EMAIL_HOST_PASSWORD=password
-FROM_ADDRESS=you@youdomain.com
+DEFAULT_FROM_EMAIL=you@youdomain.com
 EMAIL_USE_TLS=True
 BITLY_TOKEN=123344
 ```
