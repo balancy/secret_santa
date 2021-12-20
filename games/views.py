@@ -273,7 +273,13 @@ def exclusions(request, pk):
             return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
 
         return render(
-            {'form': form, 'santas': santas, 'game': game},
+            request,
+            'games/exclusions.html',
+            {
+                'form': form,
+                'santas': santas,
+                'game': game
+            },
         )
 
     form = ExclusionsForm()
