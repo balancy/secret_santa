@@ -1,5 +1,6 @@
 import datetime
 import random
+from more_itertools import chunked
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -27,9 +28,14 @@ from .models import Santa, Game, Exclusion
 
 
 def index(request):
-    santas = [santa for santa in Santa.objects.all()]
+    santas = [
+        santa
+        for santa in Santa.objects.exclude(wishlist__isnull=True).exclude(
+            wishlist__exact=''
+        )
+    ]
     random.shuffle(santas)
-    context = {'santas': santas[:WISHLISTS_MAX_NUMBER]}
+    context = {'santas': list(chunked(santas[:WISHLISTS_MAX_NUMBER], 2))}
     return render(request, 'games/index.html', context=context)
 
 

@@ -157,4 +157,4 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', True)
 
 # Wishlists number
 
-WISHLISTS_MAX_NUMBER = 6
+WISHLISTS_MAX_NUMBER = os.getenv('WISHLISTS_MAX_NUMBER', 10)

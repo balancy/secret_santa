@@ -69,25 +69,31 @@
 
       <hr>
       <h3><span class="badge bg-dark text-light">Идеи для списков желаний</span></h3>
-      <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+      <div id="carouselExampleSlidesOnly" class="carousel slide mt-5" data-ride="carousel">
         <div class="carousel-inner">
-          {% for santa in santas %}
-            {% if forloop.first %}
-              <div class="carousel-item active">
-            {% else %}
-              <div class="carousel-item">
-            {% endif %}
-              <div class="card border-dark">
-                <div class="card-header">{{ santa.user }}</div>
-                <div class="card-body">
-                  <blockquote class="testimony">
-                  <p>&ldquo;{{ santa.wishlist }}&rdquo;</p>
-                  </blockquote>
-                </div>
+
+          {% for santa_pair in santas %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <div class="row">
+
+                {% for santa in santa_pair %}
+                  <div class="col">
+                    <div class="card border-dark" style="min-height:200px;">
+                      <div class="card-header">{{ santa.user }}</div>
+                      <div class="card-body">
+                        <blockquote class="testimony">
+                          <div>{{ santa.wishlist | linebreaks }}</div>
+                        </blockquote>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
               </div>
-              </div>
-            {% endfor %}
-          </div>
+            </div>
+          {% endfor %}
+
+        </div>
       </div>
 
     </div>
