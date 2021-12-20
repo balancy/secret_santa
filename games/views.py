@@ -278,7 +278,7 @@ def exclusions(request, pk):
             {'form': form, 'santas': santas, 'game': game},
         )
 
-    form = ExclusionsForm(initial={'game': game})
+    form = ExclusionsForm()
 
     return render(
         request,
@@ -315,6 +315,8 @@ def remove_exclusion_from_game(request, game_pk, exclusion_pk):
 
     exclusion = Exclusion.objects.get(pk=exclusion_pk)
     exclusion.delete()
+
+    return redirect(reverse_lazy('update_game', kwargs={'pk': game_pk}))
 
 
 def greeting_page(request):
