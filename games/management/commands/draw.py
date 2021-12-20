@@ -1,5 +1,4 @@
 import datetime
-import os
 
 from collections import deque
 from django.conf import settings
