@@ -99,6 +99,8 @@ def make_draw(game):
         else:
             break
 
+    Draw.objects.filter(game=game).delete()
+
     for giver, receiver in modified_pairs:
         draw = Draw.objects.get_or_create(
             game=game, giver=giver, receiver=receiver
