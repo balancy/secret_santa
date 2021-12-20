@@ -267,7 +267,6 @@ def update_game(request, pk):
 def exclusions(request, pk):
     user = request.user
     game = Game.objects.filter(pk=pk).first()
-    santas = Santa.objects.filter(games=game)
 
     if not game:
         return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
@@ -286,7 +285,10 @@ def exclusions(request, pk):
         return render(
             request,
             'games/exclusions.html',
-            {'form': form, 'santas': santas, 'game': game},
+            {
+                'form': form,
+                'game': game
+            },
         )
 
     form = ExclusionsForm(initial={'game': game})
@@ -296,7 +298,6 @@ def exclusions(request, pk):
         'games/exclusions.html',
         {
             'form': form,
-            'santas': santas,
             'game': game,
         },
     )

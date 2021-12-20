@@ -155,6 +155,20 @@ class ExclusionsForm(forms.ModelForm, FormPrettifyFieldsMixin):
             'game': forms.HiddenInput(),
         }
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        initial = kwargs.get('initial')
+
+        if initial:
+            self.fields['giver'].queryset = (
+                Santa.objects.filter(games=initial['game'])
+            )
+            self.fields['receiver'].queryset = (
+                Santa.objects.filter(games=initial['game'])
+            )
+
+
     def clean(self):
         cleaned_data = super().clean()
         game = cleaned_data.get('game')
