@@ -136,13 +136,16 @@
       {% else %}
         Пока нет пар-исключений
       {% endif %}
-      <div class="row mt-3">
-        <div class="col">
-          <a class="btn btn-outline-dark my-3" href="{% url 'exclusions' game.pk %}" type="button">
-            Добавить пару-исключение
-          </a>
+
+      {% if exlusions_button_visible %}
+        <div class="row mt-3">
+          <div class="col">
+            <a class="btn btn-outline-dark my-3" href="{% url 'exclusions' game.pk %}" type="button">
+              Добавить пару-исключение
+            </a>
+          </div>
         </div>
-      </div>
+      {% endif %}
     </div>
   </div>
 
