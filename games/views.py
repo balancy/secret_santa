@@ -233,8 +233,10 @@ def update_game(request, pk):
     if game.coordinator != user:
         return redirect(reverse_lazy('profile'))
 
-    santas = Santa.objects.filter(games=game)
-    exclusions = Exclusion.objects.filter(game=game)
+    santas = game.santas.all()
+    exclusions = game.exclusions.all()
+
+    exlusions_button_visible = santas.count() - exclusions.count() > 2
 
     if request.method == 'POST':
         form = UpdateGameForm(request.POST, instance=game)
@@ -246,7 +248,13 @@ def update_game(request, pk):
         return render(
             request,
             'games/update_game.html',
-            {'form': form, 'santas': santas, 'game': game},
+            {
+                'form': form,
+                'santas': santas,
+                'game': game,
+                'exclusions': exclusions,
+                'exlusions_button_visible': exlusions_button_visible,
+            },
         )
 
     form = UpdateGameForm(instance=game)
@@ -259,6 +267,7 @@ def update_game(request, pk):
             'santas': santas,
             'game': game,
             'exclusions': exclusions,
+            'exlusions_button_visible': exlusions_button_visible,
         },
     )
 
@@ -273,9 +282,6 @@ def exclusions(request, pk):
 
     if game.coordinator != user:
         return redirect(reverse_lazy('profile'))
-
-    if game.santas.count() - game.exclusions.count() <= 2:
-        return redirect(reverse_lazy('update_game', kwargs={'pk': pk}))
 
     if request.method == 'POST':
         form = ExclusionsForm(request.POST, initial={'game': game})
